@@ -57,6 +57,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /data-source="inhouse"/);
   assert.match(html, /data-source="open-real"/);
   assert.match(html, /data-source="open-sim"/);
+  assert.doesNotMatch(html, /data-active-source=/);
   assert.match(html, /AgiBot G1/);
   assert.match(html, /RealMan Aida-L/);
   assert.match(html, /RoboTwin 2\.0 overall success-rate comparison, shown on an 80 to 95 percent scale/);
@@ -114,8 +115,13 @@ test("keeps the finished site free of starter-preview dependencies", async () =>
   assert.match(layout, /\/og\.png/);
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
-  assert.match(styles, /--data-inhouse:\s*#676d70/);
-  assert.doesNotMatch(styles, /--data-inhouse:\s*#e9a200/i);
+  assert.match(styles, /--data-inhouse:\s*#f2c14e/);
+  assert.match(styles, /--data-real-world:\s*#e9a200/);
+  assert.match(styles, /--data-highlight:\s*#e9a200/);
+  assert.doesNotMatch(styles, /--data-inhouse:\s*#(?:676d70|e9a200)/i);
+  assert.match(styles, /\.source-donut\s*\{[^}]*var\(--data-inhouse\)/);
+  assert.match(styles, /\.world-donut\s*\{[^}]*var\(--data-real-world\)/);
+  assert.equal((styles.match(/var\(--data-highlight\)/g) ?? []).length, 3);
   assert.match(
     styles,
     /top:\s*calc\(var\(--training-axis-y\) - var\(--training-stage-offset\)\)/,

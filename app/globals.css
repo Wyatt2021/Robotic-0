@@ -8,8 +8,9 @@
   --line: #e7e7e7;
   --soft: #f7f7f7;
   --white: #ffffff;
-  --data-inhouse: #676d70;
-  --data-real-world: #4f5558;
+  --data-inhouse: #f2c14e;
+  --data-real-world: #e9a200;
+  --data-highlight: #e9a200;
   --data-open-real: #f0d28b;
   --data-open-sim: #76aaa7;
   --data-sim-dark: #0d7c72;
@@ -232,10 +233,10 @@ nav::-webkit-scrollbar { display: none; }
 .robot-data-figure[data-active-source="open-sim"] .source-control[data-source="open-sim"] { opacity: 1; background: rgba(255, 209, 0, .12); color: #171717; }
 .robot-data-figure[data-active-source="inhouse"] .donut-hit[data-source="inhouse"],
 .robot-data-figure[data-active-source="open-real"] .donut-hit[data-source="open-real"],
-.robot-data-figure[data-active-source="open-sim"] .donut-hit[data-source="open-sim"] { opacity: .92; stroke: var(--yellow); stroke-width: 12; }
+.robot-data-figure[data-active-source="open-sim"] .donut-hit[data-source="open-sim"] { opacity: .92; stroke: var(--data-highlight); stroke-width: 12; }
 .robot-data-figure[data-active-source="inhouse"] .source-control[data-source="inhouse"]::before,
 .robot-data-figure[data-active-source="open-real"] .source-control[data-source="open-real"]::before,
-.robot-data-figure[data-active-source="open-sim"] .source-control[data-source="open-sim"]::before { background: var(--yellow); }
+.robot-data-figure[data-active-source="open-sim"] .source-control[data-source="open-sim"]::before { background: var(--data-highlight); }
 .robot-data-figure section > h4 { margin: 24px 0 0; font-size: 17px; letter-spacing: -.015em; font-weight: 630; text-align: center; }
 .stacked-chart { width: 100%; }
 .stacked-row { min-height: 22px; display: grid; grid-template-columns: 104px minmax(0, 1fr) 42px; gap: 8px; align-items: center; }
@@ -249,7 +250,7 @@ nav::-webkit-scrollbar { display: none; }
 .robot-data-figure[data-active-source] .stacked-track i { opacity: .14; }
 .robot-data-figure[data-active-source="inhouse"] .stacked-track i[data-source="inhouse"],
 .robot-data-figure[data-active-source="open-real"] .stacked-track i[data-source="open-real"],
-.robot-data-figure[data-active-source="open-sim"] .stacked-track i[data-source="open-sim"] { z-index: 1; opacity: 1; background: var(--yellow); transform: scaleY(1.28); }
+.robot-data-figure[data-active-source="open-sim"] .stacked-track i[data-source="open-sim"] { z-index: 1; opacity: 1; background: var(--data-highlight); transform: scaleY(1.28); }
 .stacked-axis { margin-top: 3px; display: grid; grid-template-columns: 104px minmax(0, 1fr) 42px; gap: 8px; }
 .stacked-axis > div { padding-top: 6px; display: flex; justify-content: space-between; border-top: 1px solid #aeb4b8; }
 .stacked-axis i { color: #777; font-size: 8px; font-style: normal; transform: translateX(-50%); }
