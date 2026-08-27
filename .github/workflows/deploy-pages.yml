@@ -48,12 +48,12 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           for attempt in {1..30}; do
-            if curl --fail --silent http://127.0.0.1:3001/ > /dev/null; then
+            if curl --fail --silent "http://127.0.0.1:3001${GITHUB_PAGES_BASE_PATH}/" > /dev/null; then
               break
             fi
             sleep 1
           done
-          curl --fail --silent http://127.0.0.1:3001/ > /dev/null
+          curl --fail --silent "http://127.0.0.1:3001${GITHUB_PAGES_BASE_PATH}/" > /dev/null
           pnpm run export:github-pages
           node --test tests/github-pages-export.test.mjs
 
