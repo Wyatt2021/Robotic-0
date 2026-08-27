@@ -117,7 +117,11 @@ export default function Home() {
         <div className="section-heading">
           <h2>Overview</h2>
         </div>
-        <figure className="main-figure overview-main-figure">
+        <figure
+          className="main-figure overview-main-figure"
+          role="region"
+          aria-label="Scrollable system overview"
+        >
           <img
             src="/assets/main-overview.svg"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"

@@ -45,6 +45,51 @@ html = html
   )
   .replace('nav:{"pathname":"/"', `nav:{"pathname":"${basePath}/"`);
 
+// GitHub Pages cannot serve Vinext's RSC navigation endpoint. Keep the complete
+// server-rendered page, remove the RSC bootstrap, and attach a small standalone
+// enhancement script for the page's interactive controls.
+const mainEndMarker = "</main>";
+const mainEnd = html.lastIndexOf(mainEndMarker);
+if (mainEnd < 0) throw new Error("Unable to find the rendered project page root");
+
+html = `${html.slice(0, mainEnd + mainEndMarker.length)}</body></html>`
+  .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+  .replace(/<link\b[^>]*\brel=["']modulepreload["'][^>]*\/?\s*>/gi, "");
+
+const publicPageUrl = `${publicOrigin}${basePath}/`;
+const publicImageUrl = `${publicOrigin}${basePath}/og.png`;
+const staticMetadata = [
+  "<title>Meituan-Robotics-0 | LongCat Robotics Team</title>",
+  '<meta name="description" content="A Vision-Language-Action foundation model for precise bimanual desktop manipulation.">',
+  '<meta name="robots" content="noindex, nofollow, nocache">',
+  '<meta name="googlebot" content="noindex, nofollow, noimageindex">',
+  '<meta property="og:title" content="Meituan-Robotics-0">',
+  '<meta property="og:description" content="Vision-Language-Action for Desktop Manipulation">',
+  '<meta property="og:type" content="website">',
+  `<meta property="og:url" content="${publicPageUrl}">`,
+  `<meta property="og:image" content="${publicImageUrl}">`,
+  '<meta property="og:image:width" content="1672">',
+  '<meta property="og:image:height" content="941">',
+  '<meta property="og:image:alt" content="Meituan-Robotics-0">',
+  '<meta name="twitter:card" content="summary_large_image">',
+  '<meta name="twitter:title" content="Meituan-Robotics-0">',
+  '<meta name="twitter:description" content="Vision-Language-Action for Desktop Manipulation">',
+  `<meta name="twitter:image" content="${publicImageUrl}">`,
+  `<link rel="canonical" href="${publicPageUrl}">`,
+  `<link rel="icon" href="${basePath}/favicon.png">`,
+].join("");
+
+html = html
+  .replace("</head>", `${staticMetadata}</head>`)
+  .replace(
+    "</body>",
+    `<script src="${basePath}/github-pages.js" defer></script></body>`,
+  );
+
+if (/vinext\.navigationRuntime|type=["']module["']|rel=["']modulepreload["']/.test(html)) {
+  throw new Error("Vinext runtime markup remained in the static GitHub Pages export");
+}
+
 const validationHtml = html
   .replaceAll(`${basePath}/_next/`, "")
   .replaceAll(`${basePath}/assets/`, "")
