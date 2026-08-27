@@ -36,7 +36,13 @@ for (const file of ["Meituan-Robotics-0.pdf", "favicon.png", "og.png"]) {
 }
 
 html = html
-  .replaceAll(`${exportUrl}${basePath}/og.png`, `${publicOrigin}${basePath}/og.png`)
+  .replace(
+    new RegExp(
+      `https?://(?:127\\.0\\.0\\.1|localhost)(?::\\d+)?${escapedBasePath}/og\\.png`,
+      "g",
+    ),
+    `${publicOrigin}${basePath}/og.png`,
+  )
   .replace('nav:{"pathname":"/"', `nav:{"pathname":"${basePath}/"`);
 
 const validationHtml = html
