@@ -16,8 +16,8 @@ type VerticalGroup = {
   bars: BarItem[];
 };
 
-const citationText = `LongCat Robotics Team. “Meituan-Robotics-0: A Vision-Language-Action
-Foundation Model for Desktop Manipulation.” Technical Report, 2026.`;
+const citationText = `“Meituan-Robotics-0: A Vision-Language-Action Foundation Model for
+Desktop Manipulation.” Technical Report, 2026.`;
 
 function VerticalBarChart({
   items,
@@ -90,7 +90,6 @@ export default function Home() {
       </header>
 
       <section className="hero section-shell">
-        <p className="team-name">LongCat Robotics Team</p>
         <h1>Meituan-Robotics-0</h1>
         <p className="hero-subtitle">
           A Vision-Language-Action Foundation Model for Desktop Manipulation
@@ -513,7 +512,7 @@ export default function Home() {
       <footer>
         <div className="section-shell footer-inner">
           <div className="brand"><span className="brand-mark">美团</span><span>Meituan Robotics</span></div>
-          <span>Meituan-Robotics-0 · LongCat Robotics Team</span>
+          <span>Meituan-Robotics-0</span>
         </div>
       </footer>
     </main>

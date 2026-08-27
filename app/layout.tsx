@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const imageUrl = `${protocol}://${host}/og.png`;
 
   return {
-    title: "Meituan-Robotics-0 | LongCat Robotics Team",
+    title: "Meituan-Robotics-0",
     description:
       "A Vision-Language-Action foundation model for precise bimanual desktop manipulation.",
     robots: {

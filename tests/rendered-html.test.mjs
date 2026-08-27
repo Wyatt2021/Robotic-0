@@ -21,7 +21,8 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>Meituan-Robotics-0 \| LongCat Robotics Team<\/title>/i);
+  assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
+  assert.doesNotMatch(html, /LongCat Robotics Team/i);
   assert.match(html, /main-overview\.svg/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
@@ -111,7 +112,8 @@ test("keeps the finished site free of starter-preview dependencies", async () =>
   ]);
 
   assert.match(page, /Meituan-Robotics-0/);
-  assert.match(layout, /Meituan-Robotics-0 \| LongCat Robotics Team/);
+  assert.match(layout, /title:\s*"Meituan-Robotics-0"/);
+  assert.doesNotMatch(page + layout, /LongCat Robotics Team/i);
   assert.match(layout, /\/og\.png/);
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);

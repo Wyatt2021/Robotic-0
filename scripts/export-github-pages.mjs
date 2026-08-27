@@ -59,7 +59,7 @@ html = `${html.slice(0, mainEnd + mainEndMarker.length)}</body></html>`
 const publicPageUrl = `${publicOrigin}${basePath}/`;
 const publicImageUrl = `${publicOrigin}${basePath}/og.png`;
 const staticMetadata = [
-  "<title>Meituan-Robotics-0 | LongCat Robotics Team</title>",
+  "<title>Meituan-Robotics-0</title>",
   '<meta name="description" content="A Vision-Language-Action foundation model for precise bimanual desktop manipulation.">',
   '<meta name="robots" content="noindex, nofollow, nocache">',
   '<meta name="googlebot" content="noindex, nofollow, noimageindex">',

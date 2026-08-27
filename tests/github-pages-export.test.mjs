@@ -8,7 +8,8 @@ test("exports a self-contained GitHub Pages project site", async () => {
   const html = await readFile(new URL("index.html", output), "utf8");
   const notFoundHtml = await readFile(new URL("404.html", output), "utf8");
 
-  assert.match(html, /<title>Meituan-Robotics-0 \| LongCat Robotics Team<\/title>/);
+  assert.match(html, /<title>Meituan-Robotics-0<\/title>/);
+  assert.doesNotMatch(html, /LongCat Robotics Team/i);
   assert.match(html, /name="robots" content="noindex, nofollow, nocache"/);
   assert.match(html, /\/Robotic-0\/_next\/static\/css\//);
   assert.match(html, /\/Robotic-0\/video\/vla_demo_01_en\.mp4/);
