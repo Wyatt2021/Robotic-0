@@ -102,10 +102,11 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
 });
 
 test("keeps the finished site free of starter-preview dependencies", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+  const [page, layout, packageJson, styles] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /Meituan-Robotics-0/);
@@ -113,9 +114,28 @@ test("keeps the finished site free of starter-preview dependencies", async () =>
   assert.match(layout, /\/og\.png/);
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+  assert.match(styles, /--data-inhouse:\s*#676d70/);
+  assert.doesNotMatch(styles, /--data-inhouse:\s*#e9a200/i);
+  assert.match(
+    styles,
+    /top:\s*calc\(var\(--training-axis-y\) - var\(--training-stage-offset\)\)/,
+  );
 });
 
-test("ships every project demo in a browser-compatible H.264 container", async () => {
+function readTrackDimensions(video) {
+  const typeOffset = video.indexOf(Buffer.from("tkhd"));
+  assert.notEqual(typeOffset, -1, "MP4 is missing a track header");
+
+  const boxStart = typeOffset - 4;
+  const version = video[typeOffset + 4];
+  const dimensionsOffset = boxStart + (version === 1 ? 96 : 84);
+  return [
+    video.readUInt32BE(dimensionsOffset) / 65536,
+    video.readUInt32BE(dimensionsOffset + 4) / 65536,
+  ];
+}
+
+test("ships every project demo at its high-resolution source dimensions in a browser-compatible H.264 container", async () => {
   const videos = await Promise.all([
     readFile(new URL("../public/video/block-placement-full.mp4", import.meta.url)),
     readFile(new URL("../public/video/letter-block-placement.mp4", import.meta.url)),
@@ -129,6 +149,15 @@ test("ships every project demo in a browser-compatible H.264 container", async (
     assert.equal(video.includes(Buffer.from("avc1")), true);
     assert.equal(video.includes(Buffer.from("mp4v")), false);
   }
+
+  assert.deepEqual(videos.map(readTrackDimensions), [
+    [960, 540],
+    [960, 540],
+    [960, 540],
+    [960, 540],
+    [1280, 720],
+    [1280, 720],
+  ]);
 });
 
 test("serves the PPT-derived project figures as cropped SVG assets", async () => {
