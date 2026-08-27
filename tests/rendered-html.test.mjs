@@ -116,11 +116,11 @@ test("keeps the finished site free of starter-preview dependencies", async () =>
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.match(styles, /--data-inhouse:\s*#f2c14e/);
-  assert.match(styles, /--data-inhouse-active:\s*#d99a00/);
+  assert.match(styles, /--data-inhouse-active:\s*#e5ad27/);
   assert.match(styles, /--data-real-world:\s*#e9a200/);
   assert.doesNotMatch(styles, /--data-inhouse:\s*#(?:676d70|e9a200)/i);
-  assert.match(styles, /--data-open-real-active:\s*#bd943d/);
-  assert.match(styles, /--data-open-sim-active:\s*#317f7a/);
+  assert.match(styles, /--data-open-real-active:\s*#d9b96f/);
+  assert.match(styles, /--data-open-sim-active:\s*#579895/);
   assert.doesNotMatch(styles, /--data-highlight/);
   assert.doesNotMatch(styles, /rgba\(255,\s*209,\s*0,\s*\.12\)/);
   assert.match(styles, /\.source-donut\s*\{[^}]*var\(--data-inhouse\)/);
@@ -129,6 +129,9 @@ test("keeps the finished site free of starter-preview dependencies", async () =>
   assert.equal((styles.match(/--source-tint:\s*rgba\(/g) ?? []).length, 3);
   assert.equal((styles.match(/var\(--source-active\)/g) ?? []).length, 4);
   assert.match(styles, /background:\s*var\(--source-tint\)/);
+  assert.match(styles, /data-active-source\]\s+\.source-control\s*\{\s*opacity:\s*\.58/);
+  assert.match(styles, /data-active-source\]\s+\.stacked-track i\s*\{\s*opacity:\s*\.32/);
+  assert.match(styles, /opacity:\s*\.78;\s*stroke:\s*var\(--source-active\)/);
   assert.match(
     styles,
     /top:\s*calc\(var\(--training-axis-y\) - var\(--training-stage-offset\)\)/,
