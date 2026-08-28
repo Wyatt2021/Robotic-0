@@ -371,7 +371,6 @@ export default function Home() {
         <p className="section-intro">
           Real-robot demonstrations show the policy executing precise bimanual
           manipulation and the Agent preserving task state across interruptions.
-          Each video can be viewed at 1×, 2×, or 3× playback speed.
         </p>
 
         <div className="subsection">
@@ -505,7 +504,6 @@ export default function Home() {
         </div>
         <div className="citation-resources">
           <a className="resource primary" href="/Meituan-Robotics-0.pdf">Technical Report ↗</a>
-          <span>Code, model weights, dataset, and demos: coming soon.</span>
         </div>
       </section>
 
