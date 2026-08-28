@@ -388,8 +388,8 @@ export default function Home() {
             <article className="task-card">
               <div className="task-media task-demo-media">
                 <VideoPlayer
-                  src="/video/letter-block-placement.mp4?v=20260828-hq"
-                  poster="/assets/letter-block-placement-first-frame.jpg"
+                  src="/video/letter-block-placement.mp4?v=20260828-letter1440"
+                  poster="/assets/letter-block-placement-first-frame.jpg?v=20260828-letter1440"
                   ariaLabel="Letter-block Placement demo"
                 />
               </div>

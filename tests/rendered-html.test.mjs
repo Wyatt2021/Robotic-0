@@ -91,8 +91,9 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /cable-grasp-handover\.mp4|cable-align-insert\.mp4|cable-adaptive-tracking\.mp4|Demo coming soon/);
   assert.match(html, /vla_demo_01_en\.mp4/);
   assert.match(html, /vla_demo_02_en\.mp4/);
-  assert.equal((html.match(/\?v=20260828-hq/g) ?? []).length, 10);
+  assert.equal((html.match(/\?v=20260828-hq/g) ?? []).length, 8);
   assert.equal((html.match(/\?v=20260828-block1440/g) ?? []).length, 2);
+  assert.equal((html.match(/\?v=20260828-letter1440/g) ?? []).length, 4);
   assert.doesNotMatch(html, /Each video can be viewed at 1×, 2×, or 3× playback speed\./);
   assert.doesNotMatch(html, /Code, model weights, dataset, and demos: coming soon\./);
   assert.match(html, />Copy Citation</);
@@ -169,7 +170,7 @@ test("ships every project demo at high-bitrate source quality in a browser-compa
 
   const minimumBytes = [
     90 * 1024 * 1024,
-    40 * 1024 * 1024,
+    80 * 1024 * 1024,
     70 * 1024 * 1024,
     40 * 1024 * 1024,
     50 * 1024 * 1024,
@@ -187,7 +188,7 @@ test("ships every project demo at high-bitrate source quality in a browser-compa
 
   assert.deepEqual(videos.map(readTrackDimensions), [
     [2560, 1440],
-    [960, 540],
+    [2560, 1440],
     [2560, 1440],
     [1920, 1080],
     [1280, 720],
