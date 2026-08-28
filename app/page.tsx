@@ -105,7 +105,7 @@ export default function Home() {
 
         <figure className="hero-demo">
           <VideoPlayer
-            src="/video/block-placement-full.mp4"
+            src="/video/block-placement-full.mp4?v=20260828-hq"
             poster="/assets/letter-block-placement-first-frame.jpg"
             ariaLabel="Full Letter-block Placement featured demo"
           />
@@ -388,7 +388,7 @@ export default function Home() {
             <article className="task-card">
               <div className="task-media task-demo-media">
                 <VideoPlayer
-                  src="/video/letter-block-placement.mp4"
+                  src="/video/letter-block-placement.mp4?v=20260828-hq"
                   poster="/assets/letter-block-placement-first-frame.jpg"
                   ariaLabel="Letter-block Placement demo"
                 />
@@ -402,7 +402,7 @@ export default function Home() {
             <article className="task-card">
               <div className="task-media task-demo-media">
                 <VideoPlayer
-                  src="/video/garment-folding-demo.mp4"
+                  src="/video/garment-folding-demo.mp4?v=20260828-hq"
                   poster="/assets/garment-folding-first-frame.jpg"
                   ariaLabel="Garment Folding demo"
                 />
@@ -416,7 +416,7 @@ export default function Home() {
             <article className="task-card">
               <div className="task-media task-demo-media">
                 <VideoPlayer
-                  src="/video/network-cable-insertion.mp4"
+                  src="/video/network-cable-insertion.mp4?v=20260828-hq"
                   poster="/assets/network-cable-insertion-first-frame.jpg"
                   ariaLabel="Network Cable Insertion demo"
                 />
@@ -443,7 +443,7 @@ export default function Home() {
             <article>
               <figure className="agent-demo-media">
                 <VideoPlayer
-                  src="/video/vla_demo_01_en.mp4"
+                  src="/video/vla_demo_01_en.mp4?v=20260828-hq"
                   poster="/assets/event-retrieval-first-frame.jpg"
                   ariaLabel="Cross-task Event Retrieval demo"
                 />
@@ -456,7 +456,7 @@ export default function Home() {
             <article>
               <figure className="agent-demo-media">
                 <VideoPlayer
-                  src="/video/vla_demo_02_en.mp4"
+                  src="/video/vla_demo_02_en.mp4?v=20260828-hq"
                   poster="/assets/waiting-recovery-first-frame.jpg"
                   ariaLabel="Subtask Waiting and Recovery demo"
                 />

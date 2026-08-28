@@ -90,6 +90,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /cable-grasp-handover\.mp4|cable-align-insert\.mp4|cable-adaptive-tracking\.mp4|Demo coming soon/);
   assert.match(html, /vla_demo_01_en\.mp4/);
   assert.match(html, /vla_demo_02_en\.mp4/);
+  assert.equal((html.match(/\?v=20260828-hq/g) ?? []).length, 12);
   assert.doesNotMatch(html, /Each video can be viewed at 1×, 2×, or 3× playback speed\./);
   assert.doesNotMatch(html, /Code, model weights, dataset, and demos: coming soon\./);
   assert.match(html, />Copy Citation</);
