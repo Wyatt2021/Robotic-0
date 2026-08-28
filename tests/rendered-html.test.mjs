@@ -154,7 +154,7 @@ function readTrackDimensions(video) {
   ];
 }
 
-test("ships every project demo at its high-resolution source dimensions in a browser-compatible H.264 container", async () => {
+test("ships every project demo at high-bitrate source quality in a browser-compatible H.264 container", async () => {
   const videos = await Promise.all([
     readFile(new URL("../public/video/block-placement-full.mp4", import.meta.url)),
     readFile(new URL("../public/video/letter-block-placement.mp4", import.meta.url)),
@@ -164,16 +164,29 @@ test("ships every project demo at its high-resolution source dimensions in a bro
     readFile(new URL("../public/video/vla_demo_02_en.mp4", import.meta.url)),
   ]);
 
-  for (const video of videos) {
+  const minimumBytes = [
+    90 * 1024 * 1024,
+    40 * 1024 * 1024,
+    70 * 1024 * 1024,
+    40 * 1024 * 1024,
+    50 * 1024 * 1024,
+    20 * 1024 * 1024,
+  ];
+
+  for (const [index, video] of videos.entries()) {
     assert.equal(video.includes(Buffer.from("avc1")), true);
     assert.equal(video.includes(Buffer.from("mp4v")), false);
+    assert.equal(video.includes(Buffer.from("soun")), false);
+    assert.ok(video.indexOf(Buffer.from("moov")) < video.indexOf(Buffer.from("mdat")));
+    assert.ok(video.length >= minimumBytes[index]);
+    assert.ok(video.length < 100 * 1024 * 1024);
   }
 
   assert.deepEqual(videos.map(readTrackDimensions), [
     [960, 540],
     [960, 540],
-    [960, 540],
-    [960, 540],
+    [2560, 1440],
+    [1920, 1080],
     [1280, 720],
     [1280, 720],
   ]);
