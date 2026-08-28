@@ -105,8 +105,8 @@ export default function Home() {
 
         <figure className="hero-demo">
           <VideoPlayer
-            src="/video/block-placement-full.mp4?v=20260828-hq"
-            poster="/assets/letter-block-placement-first-frame.jpg"
+            src="/video/block-placement-full.mp4?v=20260828-block1440"
+            poster="/assets/block-placement-first-frame.jpg"
             ariaLabel="Full Letter-block Placement featured demo"
           />
         </figure>
