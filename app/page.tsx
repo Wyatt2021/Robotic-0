@@ -148,7 +148,7 @@ export default function Home() {
           <div><strong>147M</strong><span>vision-language samples</span></div>
           <div><strong>15,060h</strong><span>robot trajectory data</span></div>
           <div><strong>93.6%</strong><span>RoboTwin 2.0 overall SR</span></div>
-          <div><strong>0.86 / 0.93</strong><span>final real-robot SR / PS</span></div>
+          <div><strong>14.95 / 9.53</strong><span>RoboDojo Score / SR</span></div>
         </div>
       </section>
 
@@ -302,13 +302,9 @@ export default function Home() {
           <div className="subsection-copy">
             <h3>Simulation and Real-Robot Evaluation</h3>
             <p>
-              MR0 reaches 93.6% overall success on RoboTwin 2.0 and an average
-              Score/SR of 14.95/9.53 on RoboDojo without benchmark-specific
-              enhancements. Under matched HG-DAgger post-training, MR0 reaches
-              0.78 SR and 0.91 PS, compared with 0.69 and 0.85 for π0.5. Human
-              interventions raise MR0 from 0.18/0.30 after SFT to 0.78/0.91;
-              applying RECAP to Ethernet insertion further improves that task
-              from 0.69/0.85 to 0.94/0.94.
+              We evaluate MR0 on RoboTwin 2.0, RoboDojo, and three real-robot
+              tasks: letter-block placement, garment folding, and Ethernet
+              insertion.
             </p>
           </div>
           <RevealOnView className="result-card-grid">
