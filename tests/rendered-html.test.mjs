@@ -38,17 +38,17 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /15,060h/);
   assert.ok(
     html.indexOf("main-overview.svg") <
-      html.indexOf("Meituan-Robotics-0 is a vision-language-action foundation model"),
+      html.indexOf("Meituan-Robotics-0 (MR0) is a vision-language-action foundation model"),
   );
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
   assert.match(html, /training-timeline/);
   assert.doesNotMatch(html, /method-facts|stage-grid/);
-  assert.match(html, /0\.08 → 0\.86/);
+  assert.match(html, /0\.86 \/ 0\.93/);
   assert.match(html, /RoboTwin 2\.0/);
   assert.match(html, /RoboDojo/);
-  assert.match(html, /15\.27/);
+  assert.match(html, /14\.95/);
   assert.match(html, /Real Robot/);
-  assert.match(html, />\+ HIL</);
+  assert.match(html, /RECAP/);
   assert.doesNotMatch(html, /real-robot-results\.png|robotwin-results\.png/);
   assert.doesNotMatch(html, /robot-data\.png/);
   assert.doesNotMatch(html, /<table\b/i);
@@ -58,17 +58,20 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /data-source="inhouse"/);
   assert.match(html, /data-source="open-real"/);
   assert.match(html, /data-source="open-sim"/);
+  assert.match(html, /Licensed Real/);
+  assert.match(html, /RoboDesk/);
   assert.doesNotMatch(html, /data-active-source=/);
   assert.match(html, /AgiBot G1/);
   assert.match(html, /RealMan Aida-L/);
   assert.match(html, /RoboTwin 2\.0 overall success-rate comparison, shown on an 80 to 95 percent scale/);
-  assert.match(html, /Average real-robot success rate and score comparison/);
+  assert.match(html, /Average real-robot success rate and progress score under matched HG-DAgger post-training/);
   assert.match(html, /scale 60–100%/);
   assert.match(html, /vertical-chart/);
   assert.match(html, /grouped-vertical-chart/);
   assert.doesNotMatch(html, /Agent trace metrics|≈2 Hz|10 events|6 events/);
-  assert.match(html, /\+0\.2/);
-  assert.match(html, /\+0\.78 SR/);
+  assert.match(html, /\+0\.4/);
+  assert.match(html, /\+0\.25 SR/);
+  assert.doesNotMatch(html, /0\.08 → 0\.86|15\.27|>Score</);
   assert.doesNotMatch(html, /Capability Breakdown|RoboTwin clean-scene|RoboTwin randomized-scene/);
   assert.doesNotMatch(html, /Data Curation|data-curation\.png/);
   assert.match(html, /vision-language-data\.svg/);
@@ -79,7 +82,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /waiting-recovery-first-frame\.jpg/);
   assert.doesNotMatch(html, /event-memory\.png|waiting-recovery\.png/);
   assert.match(html, /10,765 hours/);
-  assert.match(html, /Network Cable Insertion/);
+  assert.match(html, /Ethernet Insertion/);
   assert.match(html, /block-placement-full\.mp4/);
   assert.match(html, /letter-block-placement\.mp4/);
   assert.match(html, /garment-folding-demo\.mp4/);

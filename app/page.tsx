@@ -16,8 +16,8 @@ type VerticalGroup = {
   bars: BarItem[];
 };
 
-const citationText = `“Meituan-Robotics-0: A Vision-Language-Action Foundation Model for
-Desktop Manipulation.” Technical Report, 2026.`;
+const citationText = `Meituan Robotics Team. “Meituan-Robotics-0: A Vision-Language-Action
+Foundation Model for Desktop Manipulation.” Technical Report, 2026.`;
 
 function VerticalBarChart({
   items,
@@ -131,23 +131,24 @@ export default function Home() {
         </figure>
         <div className="overview-copy">
           <p>
-            Meituan-Robotics-0 is a vision-language-action foundation model for
-            precise, bimanual desktop manipulation. It combines large-scale
-            vision-language pre-training, multi-embodiment robot data, continuous
-            action modeling, and real-world post-training in one system. The model
-            uses a Qwen3.5-4B backbone and is evaluated in simulation, on physical
-            robots, and in long-horizon agent settings that require memory,
-            interruption handling, and recovery. Rather than optimizing for a
-            single benchmark, the system is designed to connect broad pre-training,
-            precise continuous control, and deployment feedback in one reusable
-            policy.
+            Meituan-Robotics-0 (MR0) is a vision-language-action foundation model
+            and embodied-agent system for stationary-base desktop manipulation.
+            It combines 147 million vision-language samples with 15,060 hours of
+            robot trajectories, then transfers these priors to continuous control
+            through a three-stage training recipe. The standalone policy reaches
+            93.6% success on RoboTwin 2.0 and ranks fourth overall on RoboDojo,
+            including first place in open-vocabulary instruction following.
+            Real-world post-training combines successful demonstrations,
+            human-gated corrections, and outcome-labeled autonomous rollouts,
+            while the event-driven agent adds persistent task memory and
+            condition-aware resumption for long-horizon execution.
           </p>
         </div>
         <div className="fact-grid" aria-label="Key results">
           <div><strong>147M</strong><span>vision-language samples</span></div>
-          <div><strong>15,060h</strong><span>robot trajectories</span></div>
-          <div><strong>93.4%</strong><span>RoboTwin 2.0 overall SR</span></div>
-          <div><strong>0.08 → 0.86</strong><span>real-robot SR after HIL</span></div>
+          <div><strong>15,060h</strong><span>robot trajectory data</span></div>
+          <div><strong>93.6%</strong><span>RoboTwin 2.0 overall SR</span></div>
+          <div><strong>0.86 / 0.93</strong><span>final real-robot SR / PS</span></div>
         </div>
       </section>
 
@@ -157,9 +158,10 @@ export default function Home() {
         </div>
         <p className="section-intro">
           The training corpus combines broad visual-language supervision with
-          curated robot trajectories across twelve embodiments. Vision-language
-          data supplies semantic coverage, while robot data grounds that knowledge
-          in executable behavior.
+          curated robot trajectories across 12 embodiments. Vision-language data
+          supplies semantic coverage, while the robot corpus combines RoboDesk,
+          licensed real-robot data, and open simulation data to ground that
+          knowledge in executable behavior.
         </p>
 
         <div className="subsection">
@@ -190,11 +192,12 @@ export default function Home() {
             <h3>Robotic Manipulation Data</h3>
             <p>
               The final robot corpus contains 15,060 hours of retained
-              trajectories. It brings together in-house collection and public
-              real and simulated data across 12 embodiments, including 10,765
-              hours of physical robot execution. Combining consistent in-house
-              demonstrations with diverse public sources prevents pre-training
-              from becoming tied to one robot morphology or collection setup.
+              tabletop trajectories across 12 embodiments. It comprises 3,235
+              hours of curated open-source real-robot data from RoboDesk, 7,530
+              hours of licensed real-robot data, and 4,295 hours of open
+              simulation data. In total, 10,765 hours come from physical robot
+              execution. The corpus is restricted to stationary-base manipulation
+              and excludes segments containing base motion.
             </p>
           </div>
           <RobotDataFigure />
@@ -208,19 +211,20 @@ export default function Home() {
         </div>
         <p className="section-intro">
           The method combines a three-stage training recipe with an event-driven
-          agent. The policy progresses from broad action priors to precise
-          continuous control and deployment feedback, while the agent adds memory,
-          monitoring, and sparse high-level planning for long-horizon execution.
+          agent. Discrete action-token pre-training establishes broad behavioral
+          priors, continuous flow-matching mid-training transfers them to precise
+          cross-embodiment control, and closed-loop post-training adapts the policy
+          to errors encountered during real-world deployment.
         </p>
 
         <div className="subsection">
           <div className="subsection-copy">
             <h3>Training Recipe</h3>
             <p>
-              The three stages address complementary bottlenecks: data scale,
-              continuous-control precision, and real-world reliability. Training
-              gradually shifts from broad next-token supervision toward feedback
-              collected around deployment failures.
+              The three stages separate broad multimodal learning from continuous
+              control and real-world adaptation. HG-DAgger and RECAP are evaluated
+              as alternative closed-loop post-training strategies rather than as
+              consecutive updates to one policy.
             </p>
           </div>
           <div className="training-timeline" role="list" aria-label="Three-stage training timeline from scale to precision to reliability">
@@ -229,7 +233,7 @@ export default function Home() {
               <div className="training-stage-body">
                 <small>Pre-training</small>
                 <h4>FAST + VLM</h4>
-                <p>Learn reusable visual-language-action priors from the full heterogeneous corpus with a shared next-token objective.</p>
+                <p>Co-train vision-language supervision and discrete FAST action tokens to align multimodal features with robot behavior.</p>
                 <strong className="stage-outcome">Broad action priors</strong>
               </div>
             </article>
@@ -239,7 +243,7 @@ export default function Home() {
               <div className="training-stage-body">
                 <small>Mid-training</small>
                 <h4>MMDiT + JiT</h4>
-                <p>Replace discrete action prediction with continuous flow matching for smooth, high-resolution bimanual control.</p>
+                <p>Replace discrete action prediction with continuous flow matching over a unified end-effector representation.</p>
                 <strong className="stage-outcome">Coherent action chunks</strong>
               </div>
             </article>
@@ -247,12 +251,12 @@ export default function Home() {
             <article className="training-stage alignment-stage" role="listitem">
               <header><span>03</span><b>Reliability</b></header>
               <div className="training-stage-body">
-                <small>Real-world alignment</small>
-                <div className="alignment-steps" aria-label="Behavior cloning, human intervention, and RECAP">
-                  <strong>BC</strong><i>→</i><strong>HIL</strong><i>→</i><strong>RECAP</strong>
+                <small>Closed-loop post-training</small>
+                <div className="alignment-steps" aria-label="Supervised fine-tuning followed by HG-DAgger or RECAP">
+                  <strong>SFT</strong><i>→</i><strong>HG-DAgger</strong><i>/</i><strong>RECAP</strong>
                 </div>
-                <p>Move from demonstrations to interventions and rollout feedback, concentrating data collection around deployment failures.</p>
-                <strong className="stage-outcome">Deployment feedback loop</strong>
+                <p>Use demonstrations and human interventions; RECAP additionally learns from outcome-labeled autonomous rollouts.</p>
+                <strong className="stage-outcome">Closed-loop policy optimization</strong>
               </div>
             </article>
           </div>
@@ -262,12 +266,13 @@ export default function Home() {
           <div className="subsection-copy">
             <h3>Event-Driven Agent</h3>
             <p>
-              A hierarchical agent combines a Monitor, Memory &amp; Event module,
-              and Planner above the VLA policy. High-level reasoning is triggered
-              only when meaningful events occur, while low-level control continues
-              at robot frequency. This allows the system to remember cross-task
-              state changes, revise plans when conditions change, and resume
-              interrupted objectives without continuously invoking the planner.
+              A Monitor, Memory Manager, and Planner operate above the VLA policy
+              at different rates. The Monitor summarizes short visual windows,
+              the Memory Manager converts them into persistent events with
+              supporting keyframes, and the Planner is invoked only when an event
+              changes task progress or feasibility. Low-level control therefore
+              continues at robot frequency while the system preserves cross-task
+              state and resumes objectives after temporary interruptions.
             </p>
           </div>
           <figure className="paper-figure wide-figure agent-figure">
@@ -288,76 +293,76 @@ export default function Home() {
         </div>
         <p className="section-intro">
           Evaluation spans simulation benchmarks and physical robot deployment.
-          Results report aggregate success rate and task score, covering policy
-          generalization, execution quality, and the effect of real-world
-          post-training.
+          Simulation measures standalone-policy transfer, while real-robot studies
+          report success rate (SR) and progress score (PS) under matched
+          post-training protocols.
         </p>
 
         <div className="subsection">
           <div className="subsection-copy">
             <h3>Simulation and Real-Robot Evaluation</h3>
             <p>
-              Results are reported with success rate and task score. Human-in-the-loop
-              collection has the largest deployment effect, increasing average
-              real-robot success rate from 0.08 to 0.86. RoboTwin 2.0 measures
-              policy generalization across clean and randomized simulation, while
-              RoboDojo probes precision, memory, and long-horizon behavior. The
-              physical evaluations add a partial-progress score alongside strict
-              task completion.
+              MR0 reaches 93.6% overall success on RoboTwin 2.0 and an average
+              Score/SR of 14.95/9.53 on RoboDojo without benchmark-specific
+              enhancements. Under matched HG-DAgger post-training, MR0 reaches
+              0.78 SR and 0.91 PS, compared with 0.69 and 0.85 for π0.5. Human
+              interventions raise MR0 from 0.18/0.30 after SFT to 0.78/0.91;
+              applying RECAP to Ethernet insertion further improves that task
+              from 0.69/0.85 to 0.94/0.94.
             </p>
           </div>
           <RevealOnView className="result-card-grid">
             <article className="result-card">
               <header>
                 <div><span>Simulation · Overall SR</span><h4>RoboTwin 2.0</h4></div>
-                <strong>93.4%</strong>
+                <strong>93.6%</strong>
               </header>
               <VerticalBarChart label="RoboTwin 2.0 overall success-rate comparison, shown on an 80 to 95 percent scale" min={80} max={95} items={[
                 { label: "ABot-M0", value: 85.6 },
                 { label: "Fast-WAM", value: 91.8 },
                 { label: "InternVLA", value: 93.2 },
-                { label: "MR0", value: 93.4, highlight: true },
+                { label: "MR0", value: 93.6, highlight: true },
               ]} />
-              <footer><b>+0.2</b> vs. InternVLA-A1.5 · scale 80–95%</footer>
+              <footer><b>+0.4</b> vs. InternVLA-A1.5 · scale 80–95%</footer>
             </article>
 
             <article className="result-card">
               <header>
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
-                <strong>15.27</strong>
+                <strong>14.95</strong>
               </header>
-              <VerticalBarChart label="RoboDojo average-score comparison for pure VLAs without UMI pre-training" max={16} items={[
+              <VerticalBarChart label="RoboDojo average-score comparison among VLA models without benchmark-specific enhancements" max={16} items={[
                 { label: "VLAct", value: 10.66 },
                 { label: "InternVLA", value: 11.15 },
                 { label: "π0.5", value: 11.41 },
                 { label: "Spatial", value: 12.38 },
-                { label: "MR0", value: 15.27, highlight: true },
+                { label: "MR0", value: 14.95, highlight: true },
               ]} />
-              <footer><b>+2.89</b> vs. Spatial Forcing · scale 0–16</footer>
+              <footer><b>+2.57</b> vs. Spatial Forcing · scale 0–16</footer>
             </article>
 
             <article className="result-card">
               <header>
-                <div><span>Physical deployment · Average</span><h4>Real Robot</h4></div>
-                <strong className="metric-pair">0.86 / 0.93</strong>
+                <div><span>Matched HG-DAgger · Average</span><h4>Real Robot</h4></div>
+                <strong className="metric-pair">0.78 / 0.91</strong>
               </header>
-              <GroupedVerticalChart label="Average real-robot success rate and score comparison, shown on a 60 to 100 percent scale" min={0.6} max={1} series={["π0.5", "MR0"]} groups={[
-                { label: "Avg. SR", bars: [{ label: "π0.5", value: 0.82 }, { label: "MR0", value: 0.86, highlight: true }] },
-                { label: "Avg. Score", bars: [{ label: "π0.5", value: 0.86 }, { label: "MR0", value: 0.93, highlight: true }] },
+              <GroupedVerticalChart label="Average real-robot success rate and progress score under matched HG-DAgger post-training, shown on a 60 to 100 percent scale" min={0.6} max={1} series={["π0.5", "MR0"]} groups={[
+                { label: "Avg. SR", bars: [{ label: "π0.5", value: 0.69 }, { label: "MR0", value: 0.78, highlight: true }] },
+                { label: "Avg. PS", bars: [{ label: "π0.5", value: 0.85 }, { label: "MR0", value: 0.91, highlight: true }] },
               ]} />
-              <footer><b>+0.04 SR / +0.07 Score</b> vs. π0.5 · scale 60–100%</footer>
+              <footer><b>+0.09 SR / +0.06 PS</b> vs. π0.5 · scale 60–100%</footer>
             </article>
 
             <article className="result-card">
               <header>
-                <div><span>Post-training · Average SR</span><h4>Human Intervention</h4></div>
-                <strong className="metric-pair">0.08 → 0.86</strong>
+                <div><span>Ethernet insertion · Full scale</span><h4>RECAP</h4></div>
+                <strong className="metric-pair">0.69 → 0.94</strong>
               </header>
-              <GroupedVerticalChart label="Effect of human intervention on average success rate and score" max={1} series={["Teleop", "+ HIL"]} groups={[
-                { label: "Avg. SR", bars: [{ label: "Teleop", value: 0.08 }, { label: "+ HIL", value: 0.86, highlight: true }] },
-                { label: "Avg. Score", bars: [{ label: "Teleop", value: 0.24 }, { label: "+ HIL", value: 0.93, highlight: true }] },
+              <GroupedVerticalChart label="RECAP compared with HG-DAgger on Ethernet insertion" max={1} series={["HG-DAgger", "RECAP"]} groups={[
+                { label: "SR", bars: [{ label: "HG-DAgger", value: 0.69 }, { label: "RECAP", value: 0.94, highlight: true }] },
+                { label: "PS", bars: [{ label: "HG-DAgger", value: 0.85 }, { label: "RECAP", value: 0.94, highlight: true }] },
               ]} />
-              <footer><b>+0.78 SR / +0.69 Score</b> with HIL · scale 0–1</footer>
+              <footer><b>+0.25 SR / +0.09 PS</b> vs. HG-DAgger · scale 0–1</footer>
             </article>
 
           </RevealOnView>
@@ -370,7 +375,7 @@ export default function Home() {
         </div>
         <p className="section-intro">
           Real-robot demonstrations show the policy executing precise bimanual
-          manipulation and the Agent preserving task state across interruptions.
+          manipulation and the agent preserving task state across interruptions.
         </p>
 
         <div className="subsection">
@@ -380,8 +385,10 @@ export default function Home() {
               Three desktop tasks cover ordered placement, deformable-object
               handling, and contact-rich insertion. The set stresses sequencing,
               bimanual coordination, recovery from local errors, and fine geometric
-              alignment. Success rate requires full task completion, while task
-              score also reflects meaningful partial progress.
+              alignment. The metrics below use the final task-specific policies:
+              HG-DAgger for letter-block placement and garment folding, and RECAP
+              for Ethernet insertion. SR requires full task completion, while PS
+              measures partial progress.
             </p>
           </div>
           <div className="task-grid">
@@ -396,7 +403,7 @@ export default function Home() {
               <div className="task-copy">
                 <h4>Letter-block Placement</h4>
                 <p>Arrange seven letter blocks in order inside a continuous groove, combining sequence tracking with precise placement.</p>
-                <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>Score</dt><dd>0.96</dd></div></dl>
+                <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>PS</dt><dd>0.96</dd></div></dl>
               </div>
             </article>
             <article className="task-card">
@@ -410,7 +417,7 @@ export default function Home() {
               <div className="task-copy">
                 <h4>Garment Folding</h4>
                 <p>Coordinate two arms while handling deformable cloth and recovering from folds that drift away from the target state.</p>
-                <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>Score</dt><dd>0.93</dd></div></dl>
+                <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>PS</dt><dd>0.93</dd></div></dl>
               </div>
             </article>
             <article className="task-card">
@@ -418,13 +425,13 @@ export default function Home() {
                 <VideoPlayer
                   src="/video/network-cable-insertion.mp4?v=20260828-hq"
                   poster="/assets/network-cable-insertion-first-frame.jpg"
-                  ariaLabel="Network Cable Insertion demo"
+                  ariaLabel="Ethernet Insertion demo"
                 />
               </div>
               <div className="task-copy">
-                <h4>Network Cable Insertion</h4>
+                <h4>Ethernet Insertion</h4>
                 <p>Localize, hand over, align, and insert a thin deformable connector through a contact-rich bimanual sequence.</p>
-                <dl><div><dt>SR</dt><dd>0.90</dd></div><div><dt>Score</dt><dd>0.89</dd></div></dl>
+                <dl><div><dt>SR</dt><dd>0.94</dd></div><div><dt>PS</dt><dd>0.94</dd></div></dl>
               </div>
             </article>
           </div>
@@ -450,7 +457,7 @@ export default function Home() {
               </figure>
               <div>
                 <h4>Cross-task Event Retrieval</h4>
-                <p>Store a state change and retrieve it when a later task depends on that history. The planner can reuse committed events instead of reconstructing the scene from scratch.</p>
+                <p>While the screwdriver subtask continues, a person moves the key from the bottom drawer to the middle drawer. The agent stores that event and later retrieves the key&apos;s last observed location for a new instruction.</p>
               </div>
             </article>
             <article>
@@ -463,7 +470,7 @@ export default function Home() {
               </figure>
               <div>
                 <h4>Subtask Waiting and Recovery</h4>
-                <p>Preserve an unfinished objective, monitor its preconditions, and resume when execution becomes possible. Temporary blockers therefore pause progress without discarding the plan.</p>
+                <p>When the key is temporarily removed, the agent preserves the pending placement objective and waits. Its return triggers reassessment, allowing the original instruction to resume and complete.</p>
               </div>
             </article>
           </div>
@@ -476,17 +483,13 @@ export default function Home() {
         </div>
         <div className="conclusion-copy">
           <p>
-            Meituan-Robotics-0 presents a unified path from large-scale
-            multi-embodiment pre-training to real-world desktop manipulation.
-            The system combines broad data coverage, continuous action modeling,
-            and human-in-the-loop post-training in a single training pipeline.
-          </p>
-          <p>
-            Future work will extend task and embodiment coverage, improve
-            long-horizon robustness, and release additional project resources.
-            The current results also show that scale alone is not sufficient:
-            careful post-training and feedback from deployment are central to
-            turning a broadly pre-trained policy into a reliable real-world system.
+            Meituan-Robotics-0 connects aligned heterogeneous data, continuous
+            cross-embodiment control, closed-loop policy optimization, and
+            event-level memory in one desktop-manipulation system. The evaluation
+            shows that broad pre-training supports transfer, human interventions
+            improve recovery from policy-induced states, outcome feedback raises
+            precision-sensitive insertion success, and persistent events extend
+            planning beyond the current observation.
           </p>
         </div>
       </section>

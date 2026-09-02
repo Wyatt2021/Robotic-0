@@ -81,7 +81,7 @@ export default function RobotDataFigure() {
             onBlur={() => clearFocusedSource("open-real")}
             onClick={() => toggleLockedSource("open-real")}
           >
-            <span>Open Real</span><strong>21.5%</strong>
+            <span>RoboDesk</span><strong>21.5%</strong>
           </button>
           <button
             type="button"
@@ -94,12 +94,12 @@ export default function RobotDataFigure() {
             onBlur={() => clearFocusedSource("inhouse")}
             onClick={() => toggleLockedSource("inhouse")}
           >
-            <span>In-house Real</span><strong>50.0%</strong>
+            <span>Licensed Real</span><strong>50.0%</strong>
           </button>
           <div
             className="source-donut"
             role="group"
-            aria-label="50 percent in-house real, 21.5 percent open real, and 28.5 percent open simulation"
+            aria-label="50 percent licensed real, 21.5 percent RoboDesk, and 28.5 percent open simulation"
           >
             <div className="world-donut">
               <div className="donut-center"><strong>15,060</strong><span>hours</span></div>
@@ -126,7 +126,7 @@ export default function RobotDataFigure() {
                 pointerEvents="stroke"
                 role="button"
                 tabIndex={0}
-                aria-label="In-house Real, 50.0 percent"
+                aria-label="Licensed Real, 50.0 percent"
                 aria-pressed={lockedSource === "inhouse"}
                 onPointerEnter={() => setHoveredSource("inhouse")}
                 onPointerLeave={() => clearHoveredSource("inhouse")}
@@ -151,7 +151,7 @@ export default function RobotDataFigure() {
                 pointerEvents="stroke"
                 role="button"
                 tabIndex={0}
-                aria-label="Open Real, 21.5 percent"
+                aria-label="RoboDesk, 21.5 percent"
                 aria-pressed={lockedSource === "open-real"}
                 onPointerEnter={() => setHoveredSource("open-real")}
                 onPointerLeave={() => clearHoveredSource("open-real")}
@@ -220,7 +220,7 @@ export default function RobotDataFigure() {
             onBlur={() => clearFocusedSource("inhouse")}
             onClick={() => toggleLockedSource("inhouse")}
           >
-            In-house Real
+            Licensed Real
           </button>
           <button
             type="button"
@@ -233,7 +233,7 @@ export default function RobotDataFigure() {
             onBlur={() => clearFocusedSource("open-real")}
             onClick={() => toggleLockedSource("open-real")}
           >
-            Open Real
+            RoboDesk
           </button>
           <button
             type="button"
