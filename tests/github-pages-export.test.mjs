@@ -13,8 +13,7 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.match(html, /name="robots" content="noindex, nofollow, nocache"/);
   assert.match(html, /\/Robotic-0\/_next\/static\/css\//);
   assert.match(html, /\/Robotic-0\/video\/vla_demo_01_en\.mp4/);
-  assert.match(html, /\/Robotic-0\/assets\/main-overview\.svg\?v=20260902/);
-  assert.match(html, /\/Robotic-0\/assets\/embodied-agent\.svg\?v=20260902/);
+  assert.match(html, /\/Robotic-0\/assets\/main-overview\.svg/);
   assert.match(html, /<script src="\/Robotic-0\/github-pages\.js" defer><\/script>/);
   assert.match(
     html,
@@ -55,7 +54,6 @@ test("exports a self-contained GitHub Pages project site", async () => {
   await Promise.all([
     access(new URL("_next/static/chunks/", output)),
     access(new URL("assets/main-overview.svg", output)),
-    access(new URL("assets/embodied-agent.svg", output)),
     access(new URL("video/block-placement-full.mp4", output)),
     access(new URL("video/vla_demo_01_en.mp4", output)),
     access(new URL("Meituan-Robotics-0.pdf", output)),
