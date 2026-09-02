@@ -210,7 +210,7 @@ nav::-webkit-scrollbar { display: none; }
 .donut-label strong { margin-top: 2px; font-weight: 650; }
 .open-sim-label { left: 10px; top: 53px; }
 .open-real-label { left: 10px; bottom: 54px; }
-.inhouse-label { right: 10px; top: 144px; }
+.inhouse-label { right: -12px; top: 144px; }
 .donut-hit-map { width: 100%; height: 100%; position: absolute; z-index: 4; inset: 0; overflow: visible; pointer-events: none; }
 .donut-hit { cursor: pointer; opacity: .001; pointer-events: stroke; transition: opacity .18s ease, stroke-width .18s ease; }
 .donut-hit.inhouse { stroke: var(--data-inhouse); }
@@ -484,13 +484,13 @@ footer { border-top: 1px solid var(--line); }
   .fact-grid div:first-child { min-height: auto; padding: 20px 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .fact-grid div:last-child { border-bottom: 0; }
   .robot-data-figure { padding: 28px 12px 25px; gap: 44px; }
-  .donut-stage { max-width: 310px; height: 282px; }
+  .donut-stage { width: calc(100% + 56px); max-width: 390px; height: 282px; }
   .source-donut { width: 204px; height: 204px; top: 36px; }
   .world-donut { width: 168px; height: 168px; }
   .donut-center { width: 128px; height: 128px; }
   .donut-center strong { font-size: 22px; }
   .donut-center span { font-size: 12px; }
-  .donut-label { width: 54px; font-size: 9px; }
+  .donut-label { width: 50px; font-size: 9px; }
   .open-sim-label { left: 0; top: 45px; }
   .open-real-label { left: 0; bottom: 45px; }
   .inhouse-label { right: 0; top: 128px; }

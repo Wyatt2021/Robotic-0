@@ -43,7 +43,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
   assert.match(html, /training-timeline/);
   assert.doesNotMatch(html, /method-facts|stage-grid/);
-  assert.match(html, /0\.86 \/ 0\.93/);
+  assert.match(html, /14\.95 \/ 9\.53/);
   assert.match(html, /RoboTwin 2\.0/);
   assert.match(html, /RoboDojo/);
   assert.match(html, /14\.95/);
