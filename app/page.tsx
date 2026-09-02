@@ -122,7 +122,7 @@ export default function Home() {
           aria-label="Scrollable system overview"
         >
           <img
-            src="/assets/main-overview.svg"
+            src="/assets/main-overview-20260902.svg"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}
@@ -275,9 +275,14 @@ export default function Home() {
               state and resumes objectives after temporary interruptions.
             </p>
           </div>
-          <figure className="paper-figure wide-figure agent-figure">
+          <figure
+            className="paper-figure wide-figure agent-figure"
+            role="region"
+            aria-label="Scrollable event-driven agent architecture"
+            tabIndex={0}
+          >
             <img
-              src="/assets/embodied-agent.svg"
+              src="/assets/embodied-agent-20260902.svg"
               alt="Event-driven agent with task context, an asynchronous agent loop, and high-frequency action execution"
               width={2485}
               height={1243}
@@ -398,7 +403,6 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Letter-block Placement</h4>
-                <p>Arrange seven letter blocks in order inside a continuous groove, combining sequence tracking with precise placement.</p>
                 <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>PS</dt><dd>0.96</dd></div></dl>
               </div>
             </article>
@@ -412,7 +416,6 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Garment Folding</h4>
-                <p>Coordinate two arms while handling deformable cloth and recovering from folds that drift away from the target state.</p>
                 <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>PS</dt><dd>0.93</dd></div></dl>
               </div>
             </article>
@@ -426,7 +429,6 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Ethernet Insertion</h4>
-                <p>Localize, hand over, align, and insert a thin deformable connector through a contact-rich bimanual sequence.</p>
                 <dl><div><dt>SR</dt><dd>0.94</dd></div><div><dt>PS</dt><dd>0.94</dd></div></dl>
               </div>
             </article>

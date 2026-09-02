@@ -23,7 +23,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   const html = await response.text();
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /main-overview\.svg/);
+  assert.match(html, /main-overview-20260902\.svg/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
   assert.match(html, />Method</);
@@ -37,7 +37,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /Page reading progress/);
   assert.match(html, /15,060h/);
   assert.ok(
-    html.indexOf("main-overview.svg") <
+    html.indexOf("main-overview-20260902.svg") <
       html.indexOf("Meituan-Robotics-0 (MR0) is a vision-language-action foundation model"),
   );
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
@@ -76,7 +76,8 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /Data Curation|data-curation\.png/);
   assert.match(html, /vision-language-data\.svg/);
   assert.doesNotMatch(html, /action-head\.svg/);
-  assert.match(html, /embodied-agent\.svg/);
+  assert.match(html, /embodied-agent-20260902\.svg/);
+  assert.match(html, /aria-label="Scrollable event-driven agent architecture" tabindex="0"/);
   assert.doesNotMatch(html, /main-overview\.png|vision-language-data\.png|action-head\.png|embodied-agent\.png/);
   assert.match(html, /event-retrieval-first-frame\.jpg/);
   assert.match(html, /waiting-recovery-first-frame\.jpg/);
@@ -87,6 +88,9 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /letter-block-placement\.mp4/);
   assert.match(html, /garment-folding-demo\.mp4/);
   assert.match(html, /network-cable-insertion\.mp4/);
+  assert.doesNotMatch(html, /Arrange seven letter blocks in order inside a continuous groove/);
+  assert.doesNotMatch(html, /Coordinate two arms while handling deformable cloth/);
+  assert.doesNotMatch(html, /Localize, hand over, align, and insert a thin deformable connector/);
   assert.match(html, /block-placement-first-frame\.jpg/);
   assert.match(html, /letter-block-placement-first-frame\.jpg/);
   assert.match(html, /garment-folding-first-frame\.jpg/);
@@ -201,13 +205,16 @@ test("ships every project demo at high-bitrate source quality in a browser-compa
 
 test("serves the PPT-derived project figures as cropped SVG assets", async () => {
   const figures = await Promise.all([
-    readFile(new URL("../public/assets/main-overview.svg", import.meta.url), "utf8"),
+    readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8"),
     readFile(new URL("../public/assets/vision-language-data.svg", import.meta.url), "utf8"),
-    readFile(new URL("../public/assets/embodied-agent.svg", import.meta.url), "utf8"),
+    readFile(new URL("../public/assets/embodied-agent-20260902.svg", import.meta.url), "utf8"),
   ]);
 
   for (const figure of figures) {
     assert.match(figure, /<svg\b[^>]*viewBox="[^"]+"[^>]*preserveAspectRatio="xMidYMid meet"/);
     assert.match(figure, /<path\b/);
   }
+
+  assert.match(figures[0], /width="1762\.545" height="1169\.894" viewBox="804\.484 1061\.304 1762\.545 1169\.894"/);
+  assert.match(figures[2], /width="2484\.841" height="1243\.087" viewBox="217\.386 78\.301 2484\.841 1243\.087"/);
 });
