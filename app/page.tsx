@@ -122,7 +122,7 @@ export default function Home() {
           aria-label="Scrollable system overview"
         >
           <img
-            src="/assets/main-overview.svg"
+            src="/assets/main-overview.svg?v=20260902"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}
@@ -275,9 +275,14 @@ export default function Home() {
               state and resumes objectives after temporary interruptions.
             </p>
           </div>
-          <figure className="paper-figure wide-figure agent-figure">
+          <figure
+            className="paper-figure wide-figure agent-figure"
+            role="region"
+            aria-label="Scrollable event-driven agent architecture"
+            tabIndex={0}
+          >
             <img
-              src="/assets/embodied-agent.svg"
+              src="/assets/embodied-agent.svg?v=20260902"
               alt="Event-driven agent with task context, an asynchronous agent loop, and high-frequency action execution"
               width={2485}
               height={1243}

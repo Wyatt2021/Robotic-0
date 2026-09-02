@@ -23,7 +23,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   const html = await response.text();
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /main-overview\.svg/);
+  assert.match(html, /main-overview\.svg\?v=20260902/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
   assert.match(html, />Method</);
@@ -76,7 +76,8 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /Data Curation|data-curation\.png/);
   assert.match(html, /vision-language-data\.svg/);
   assert.doesNotMatch(html, /action-head\.svg/);
-  assert.match(html, /embodied-agent\.svg/);
+  assert.match(html, /embodied-agent\.svg\?v=20260902/);
+  assert.match(html, /aria-label="Scrollable event-driven agent architecture" tabindex="0"/);
   assert.doesNotMatch(html, /main-overview\.png|vision-language-data\.png|action-head\.png|embodied-agent\.png/);
   assert.match(html, /event-retrieval-first-frame\.jpg/);
   assert.match(html, /waiting-recovery-first-frame\.jpg/);
@@ -210,4 +211,7 @@ test("serves the PPT-derived project figures as cropped SVG assets", async () =>
     assert.match(figure, /<svg\b[^>]*viewBox="[^"]+"[^>]*preserveAspectRatio="xMidYMid meet"/);
     assert.match(figure, /<path\b/);
   }
+
+  assert.match(figures[0], /width="1762\.545" height="1169\.894" viewBox="804\.484 1061\.304 1762\.545 1169\.894"/);
+  assert.match(figures[2], /width="2484\.841" height="1243\.087" viewBox="217\.386 78\.301 2484\.841 1243\.087"/);
 });

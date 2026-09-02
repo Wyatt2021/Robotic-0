@@ -449,7 +449,8 @@ footer { border-top: 1px solid var(--line); }
   .hero-subtitle { font-size: 20px; }
   .resource-row { justify-content: flex-start; margin-bottom: 42px; }
   .resource { min-height: 40px; padding: 0 13px; }
-  .overview-main-figure {
+  .overview-main-figure,
+  .agent-figure {
     overflow-x: auto;
     overflow-y: hidden;
     border-radius: 12px;
@@ -458,7 +459,8 @@ footer { border-top: 1px solid var(--line); }
     scrollbar-color: #c7c7c7 transparent;
     -webkit-overflow-scrolling: touch;
   }
-  .overview-main-figure img { width: 820px; max-width: none; height: auto; border-radius: 12px; }
+  .overview-main-figure img,
+  .agent-figure img { width: 820px; max-width: none; height: auto; border-radius: 12px; }
   .playback-speed { top: 8px; right: 8px; }
   .project-section { padding: 84px 0; }
   .hero + .project-section { margin-top: 84px; }
