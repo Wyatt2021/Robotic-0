@@ -420,7 +420,6 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Letter-block Placement</h4>
-                <p className="task-protocol">{results.demos.letterBlock.protocol}</p>
                 <dl><div><dt>SR</dt><dd>{fixed(results.demos.letterBlock.sr)}</dd></div><div><dt>PS</dt><dd>{fixed(results.demos.letterBlock.ps)}</dd></div></dl>
               </div>
             </article>
@@ -434,7 +433,6 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Garment Folding</h4>
-                <p className="task-protocol">{results.demos.garment.protocol}</p>
                 <dl><div><dt>SR</dt><dd>{fixed(results.demos.garment.sr)}</dd></div><div><dt>PS</dt><dd>{fixed(results.demos.garment.ps)}</dd></div></dl>
               </div>
             </article>
@@ -448,7 +446,6 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Ethernet Insertion</h4>
-                <p className="task-protocol">{results.demos.ethernet.protocol}</p>
                 <dl><div><dt>SR</dt><dd>{fixed(results.ethernetRollback.mr0.sr)}</dd></div><div><dt>PS</dt><dd>{fixed(results.ethernetRollback.mr0.ps)}</dd></div></dl>
               </div>
             </article>

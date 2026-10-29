@@ -40,6 +40,9 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.doesNotMatch(html, /rel=["']modulepreload["']/i);
   assert.doesNotMatch(html, /\/Robotic-0\/Robotic-0\//);
   assert.equal((html.match(/<video\b/g) ?? []).length, 6);
+  const demoCards = [...html.matchAll(/<article class="task-card">([\s\S]*?)<\/article>/g)].map((match) => match[1]);
+  assert.equal(demoCards.length, 3);
+  for (const card of demoCards) assert.doesNotMatch(card, /task-protocol|HG-DAgger|CFG-DAgger/);
   assert.equal((html.match(/<img\b/g) ?? []).length, 3);
   assert.doesNotMatch(notFoundHtml, /vinext\.navigationRuntime|rel=["']modulepreload["']/i);
 

@@ -154,8 +154,17 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /CFG-DAgger: 0\.70/);
   assert.match(html, /CFG-DAgger: 0\.90/);
   assert.match(html, /class="metric-pair" role="group" aria-label="SR 0\.70, PS 0\.90"/);
-  assert.equal((html.match(/class="task-protocol">HG-DAgger</g) ?? []).length, 2);
-  assert.equal((html.match(/class="task-protocol">CFG-DAgger</g) ?? []).length, 1);
+  const demoCards = [...html.matchAll(/<article class="task-card">([\s\S]*?)<\/article>/g)].map((match) => match[1]);
+  assert.equal(demoCards.length, 3);
+  const expectedDemos = [["Letter-block Placement", "0.83", "0.96"], ["Garment Folding", "0.83", "0.93"], ["Ethernet Insertion", "0.70", "0.90"]];
+  demoCards.forEach((card, index) => {
+    const [title, sr, ps] = expectedDemos[index];
+    assert.ok(card.includes(`<h4>${title}</h4>`));
+    assert.ok(card.includes(`<dt>SR</dt><dd>${sr}</dd>`));
+    assert.ok(card.includes(`<dt>PS</dt><dd>${ps}</dd>`));
+    assert.match(card, /<video\b/);
+    assert.doesNotMatch(card, /task-protocol|HG-DAgger|CFG-DAgger/);
+  });
   assert.match(html, /time-based execution efficiency/);
   assert.doesNotMatch(html, /150\.7M VLM samples from 64 sub-datasets/);
   assert.match(html, /Alternative post-training algorithms: HG-DAgger, RECAP, and CFG-DAgger/);
