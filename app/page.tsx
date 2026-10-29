@@ -24,10 +24,8 @@ Foundation Model for Desktop Manipulation.” Technical Report, 2026.`;
 
 const robotwinMR0 = results.robotwin.models.find((model) => model.highlight)!;
 const robodojoMR0 = results.robodojo.models.find((model) => model.highlight)!;
-const robotwinComparison = results.robotwin.models.find((model) => model.label === "InternVLA-A1.5")!;
 const number = (value: number) => value.toLocaleString("en-US");
 const fixed = (value: number) => value.toFixed(2);
-const improvement = (value: number, baseline: number) => `+${fixed(value - baseline)}`;
 
 function MetricPair({ sr, ps }: { sr: number; ps: number }) {
   return (
@@ -345,7 +343,6 @@ export default function Home() {
                 <strong>{`${robotwinMR0.value}%`}</strong>
               </header>
               <VerticalBarChart label={`RoboTwin 2.0 overall success-rate comparison, shown on an ${results.robotwin.min} to ${results.robotwin.max} percent scale`} min={results.robotwin.min} max={results.robotwin.max} ticks={[80, 90, 95]} items={results.robotwin.models} />
-              <footer><b>{`+${(robotwinMR0.value - robotwinComparison.value).toFixed(1)} pp`}</b>{` vs. InternVLA-A1.5 · scale ${results.robotwin.min}–${results.robotwin.max}%`}</footer>
             </article>
 
             <article className="result-card">
@@ -354,7 +351,6 @@ export default function Home() {
                 <strong>{fixed(robodojoMR0.value)}</strong>
               </header>
               <VerticalBarChart label={`RoboDojo average Score comparison with selected methods from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
-              <footer><b>{results.robodojo.sources.mr0}</b><span>{`Selected methods · scale ${results.robodojo.min}–${results.robodojo.max}`}</span></footer>
             </article>
 
             <article className="result-card">
@@ -366,7 +362,6 @@ export default function Home() {
                 { label: "Avg. SR", bars: [{ label: results.realRobot.baseline.label, value: results.realRobot.baseline.sr }, { label: results.realRobot.mr0.label, value: results.realRobot.mr0.sr, highlight: true }] },
                 { label: "Avg. PS", bars: [{ label: results.realRobot.baseline.label, value: results.realRobot.baseline.ps }, { label: results.realRobot.mr0.label, value: results.realRobot.mr0.ps, highlight: true }] },
               ]} />
-              <footer><b>{`${improvement(results.realRobot.mr0.sr, results.realRobot.baseline.sr)} SR / ${improvement(results.realRobot.mr0.ps, results.realRobot.baseline.ps)} PS`}</b>{` vs. ${results.realRobot.baseline.label} · scale ${results.realRobot.min * 100}–${results.realRobot.max * 100}%`}</footer>
             </article>
 
             <article className="result-card">
@@ -378,7 +373,6 @@ export default function Home() {
                 { label: "SR", bars: [{ label: results.ethernetRollback.baseline.label, value: results.ethernetRollback.baseline.sr, display: fixed(results.ethernetRollback.baseline.sr) }, { label: results.ethernetRollback.mr0.label, value: results.ethernetRollback.mr0.sr, display: fixed(results.ethernetRollback.mr0.sr), highlight: true }] },
                 { label: "PS", bars: [{ label: results.ethernetRollback.baseline.label, value: results.ethernetRollback.baseline.ps, display: fixed(results.ethernetRollback.baseline.ps) }, { label: results.ethernetRollback.mr0.label, value: results.ethernetRollback.mr0.ps, display: fixed(results.ethernetRollback.mr0.ps), highlight: true }] },
               ]} />
-              <footer><b>{`${improvement(results.ethernetRollback.mr0.sr, results.ethernetRollback.baseline.sr)} SR / ${improvement(results.ethernetRollback.mr0.ps, results.ethernetRollback.baseline.ps)} PS`}</b>{` vs. ${results.ethernetRollback.baseline.label} · full Rollback set · scale ${results.ethernetRollback.min}–${results.ethernetRollback.max}`}</footer>
             </article>
 
           </RevealOnView>

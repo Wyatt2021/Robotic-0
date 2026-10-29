@@ -22,7 +22,10 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.match(html, /aria-label="SR 0\.70, PS 0\.90"/);
   assert.match(html, /CFG-DAgger/);
   assert.doesNotMatch(html, /19\.68|14\.07|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
-  assert.match(html, /<b>Figure 1<\/b><span>Selected methods · scale 0–20<\/span>/);
+  const resultCards = [...html.matchAll(/<article class="result-card">([\s\S]*?)<\/article>/g)].map((match) => match[1]);
+  assert.equal(resultCards.length, 4);
+  for (const card of resultCards) assert.doesNotMatch(card, /<footer\b/);
+  assert.doesNotMatch(html, /Selected methods · scale|\+0\.4 pp|\+0\.09 SR \/ \+0\.06 PS|\+0\.10 SR \/ \+0\.23 PS/);
   assert.match(html, /VLACT/);
   assert.match(html, /InternVLA-A1\.5/);
   assert.match(html, /π0\.5/);

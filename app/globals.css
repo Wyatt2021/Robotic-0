@@ -326,9 +326,6 @@ nav::-webkit-scrollbar { display: none; }
 .metric-pair { display: flex; flex: 0 0 auto; gap: 16px; }
 .metric-pair > div { display: flex; align-items: flex-end; flex-direction: column; gap: 5px; }
 .metric-pair strong { font-size: 25px; line-height: 1; letter-spacing: -.035em; font-weight: 670; }
-.result-card > footer { margin-top: 14px; padding-top: 8px; color: #717171; font-size: 11px; line-height: 1.55; text-align: right; }
-.result-card > footer b { color: #343434; font-weight: 680; }
-.result-card > footer > span { display: block; }
 .vertical-chart { position: relative; height: 226px; margin-top: 22px; padding: 18px 4px 0; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 13px; border-bottom: 1px solid #d9d9d9; background: repeating-linear-gradient(to top, transparent 0, transparent 54px, #f0f0ee 55px); }
 .vertical-chart.has-scale { padding-left: 30px; background: none; }
 .vertical-scale { position: absolute; top: 36px; right: 4px; bottom: 43px; left: 0; pointer-events: none; }

@@ -75,15 +75,15 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /RealMan Aida-L/);
   assert.match(html, /RoboTwin 2\.0 overall success-rate comparison, shown on an 80 to 95 percent scale/);
   assert.match(html, /Average real-robot success rate and progress score under matched HG-DAgger post-training/);
-  assert.match(html, /scale 60–100%/);
+  assert.doesNotMatch(html, /scale 60–100%/);
   assert.match(html, /class="metric-pair" role="group" aria-label="SR 0\.78, PS 0\.91"/);
-  assert.match(html, /\+0\.09 SR \/ \+0\.06 PS/);
+  assert.doesNotMatch(html, /\+0\.09 SR \/ \+0\.06 PS/);
   assert.match(html, /vertical-chart/);
   assert.match(html, /grouped-vertical-chart/);
   assert.doesNotMatch(html, /Agent trace metrics|≈2 Hz|10 events|6 events/);
-  assert.match(html, /\+0\.4 pp/);
+  assert.doesNotMatch(html, /\+0\.4 pp/);
   assert.match(html, /vertical-scale/);
-  assert.match(html, /\+0\.10 SR \/ \+0\.23 PS/);
+  assert.doesNotMatch(html, /\+0\.10 SR \/ \+0\.23 PS/);
   assert.doesNotMatch(html, /0\.08 → 0\.86|15\.27|>Score</);
   assert.doesNotMatch(html, /Capability Breakdown|RoboTwin clean-scene|RoboTwin randomized-scene/);
   assert.doesNotMatch(html, /Data Curation|data-curation\.png/);
@@ -132,17 +132,22 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   // Keep the original page structure while auditing corrected paper results.
   assert.doesNotMatch(html, /19\.68|14\.07|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
   assert.doesNotMatch(html, /without benchmark-specific enhancements|outcome-labeled autonomous rollouts/);
-  const roboDojoCard = [...html.matchAll(/<article class="result-card">([\s\S]*?)<\/article>/g)]
-    .map((match) => match[1])
-    .find((card) => /<h4>RoboDojo<\/h4>/.test(card));
+  const resultCards = [...html.matchAll(/<article class="result-card">([\s\S]*?)<\/article>/g)].map((match) => match[1]);
+  assert.equal(resultCards.length, 4);
+  for (const card of resultCards) {
+    assert.doesNotMatch(card, /<footer\b/);
+    assert.match(card, /<header\b/);
+    assert.match(card, /vertical-chart/);
+  }
+  const roboDojoCard = resultCards.find((card) => /<h4>RoboDojo<\/h4>/.test(card));
   assert.ok(roboDojoCard, "Missing RoboDojo model-comparison card");
   for (const value of ["VLACT", "10.66", "InternVLA-A1.5", "11.15", "π0.5", "11.41", "Spatial Forcing", "12.38", "MR0", "14.95"]) {
     assert.ok(roboDojoCard.includes(value), `Missing selected RoboDojo model or Score ${value}`);
   }
-  assert.match(roboDojoCard, /<b>Figure 1<\/b><span>Selected methods · scale 0–20<\/span>/);
+  assert.doesNotMatch(roboDojoCard, /Selected methods · scale/);
   assert.match(roboDojoCard, /RoboDojo average Score comparison with selected methods from Figure 1; not a complete leaderboard/);
   assert.equal((roboDojoCard.match(/class="vertical-column/g) ?? []).length, 5);
-  assert.match(roboDojoCard, /scale 0–20/);
+  assert.doesNotMatch(roboDojoCard, /scale 0–20/);
   assert.match(roboDojoCard, /vertical-column highlight/);
   assert.doesNotMatch(roboDojoCard, /General\.|Precision|Long-Horizon|Memory|Open|Xiaomi|Galaxea|DM0\.5|Rex-M1|Simate|SimpleMem|KinRT|Hy-Embodied/);
   assert.doesNotMatch(roboDojoCard, /Average SR|Table 5/);
