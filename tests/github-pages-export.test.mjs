@@ -13,7 +13,7 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.match(html, /name="robots" content="noindex, nofollow, nocache"/);
   assert.match(html, /\/Robotic-0\/_next\/static\/css\//);
   assert.match(html, /\/Robotic-0\/video\/vla_demo_01_en\.mp4/);
-  assert.match(html, /\/Robotic-0\/assets\/main-overview-20260902\.svg\?v=20261029-table5-axis/);
+  assert.match(html, /\/Robotic-0\/assets\/main-overview-20261029\.svg\?v=20261029-ppt-overview/);
   assert.match(html, /\/Robotic-0\/assets\/vision-language-data\.svg/);
   assert.match(html, /\/Robotic-0\/assets\/embodied-agent-20261029\.svg/);
   assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger|rollback-20261029\.svg/);
@@ -75,7 +75,7 @@ test("exports a self-contained GitHub Pages project site", async () => {
 
   await Promise.all([
     access(new URL("_next/static/chunks/", output)),
-    access(new URL("assets/main-overview-20260902.svg", output)),
+    access(new URL("assets/main-overview-20261029.svg", output)),
     access(new URL("assets/vision-language-data.svg", output)),
     access(new URL("assets/embodied-agent-20261029.svg", output)),
     access(new URL("video/block-placement-full.mp4", output)),

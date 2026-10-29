@@ -32,7 +32,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /aria-label="View Event-driven agent at full size"/);
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /main-overview-20260902\.svg\?v=20261029-table5-axis/);
+  assert.match(html, /main-overview-20261029\.svg\?v=20261029-ppt-overview/);
   assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
@@ -47,7 +47,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /Page reading progress/);
   assert.match(html, /15,060h/);
   assert.ok(
-    html.indexOf("main-overview-20260902.svg") <
+    html.indexOf("main-overview-20261029.svg") <
       html.indexOf("Meituan-Robotics-0 (MR0) is a vision-language-action foundation model"),
   );
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
@@ -268,9 +268,9 @@ test("ships every project demo at high-bitrate source quality in a browser-compa
   ]);
 });
 
-test("keeps the original figure slots with localized paper corrections", async () => {
+test("ships the latest PPT overview and preserves the other figure slots", async () => {
   const figures = await Promise.all([
-    readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8"),
+    readFile(new URL("../public/assets/main-overview-20261029.svg", import.meta.url), "utf8"),
     readFile(new URL("../public/assets/vision-language-data.svg", import.meta.url), "utf8"),
     readFile(new URL("../public/assets/embodied-agent-20261029.svg", import.meta.url), "utf8"),
   ]);
@@ -288,7 +288,7 @@ test("keeps the original figure slots with localized paper corrections", async (
   }
 });
 
-test("matches overview RoboDojo baselines to Figure 1 and MR0 to Table 5", async () => {
+test("preserves the archived generated overview results", async () => {
   const overview = await readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8");
   const chart = overview.slice(overview.indexOf('<g id="robodojo-comparison"'));
   const bars = [...chart.matchAll(/<rect data-model="([^"]+)" data-score="([^"]+)"[^>]*y="([^"]+)"[^>]*height="([^"]+)"[^>]*fill="([^"]+)"/g)];

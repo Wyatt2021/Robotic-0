@@ -151,14 +151,14 @@ export default function Home() {
           tabIndex={0}
         >
           <img
-            src="/assets/main-overview-20260902.svg?v=20261029-table5-axis"
+            src="/assets/main-overview-20261029.svg?v=20261029-ppt-overview"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}
             loading="lazy"
           />
         </figure>
-        <FigureViewer src="/assets/main-overview-20260902.svg?v=20261029-table5-axis" title="System overview" />
+        <FigureViewer src="/assets/main-overview-20261029.svg?v=20261029-ppt-overview" title="System overview" />
         <div className="overview-copy">
           <p>
             Meituan-Robotics-0 (MR0) is a vision-language-action foundation model
