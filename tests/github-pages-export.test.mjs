@@ -22,10 +22,12 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.match(html, /0\.70 \/ 0\.90/);
   assert.match(html, /CFG-DAgger/);
   assert.doesNotMatch(html, /14\.95|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
-  assert.match(html, /Selected VLA models/);
-  assert.match(html, /SimpleMemVLA/);
-  assert.match(html, /KinRT/);
-  assert.match(html, /Hy-Embodied/);
+  assert.match(html, /Baselines: Fig\. 1 · MR0: Table 5/);
+  assert.match(html, /VLACT/);
+  assert.match(html, /InternVLA-A1\.5/);
+  assert.match(html, /π0\.5/);
+  assert.match(html, /Spatial Forcing/);
+  assert.doesNotMatch(html, /SimpleMemVLA|KinRT|Hy-Embodied/);
   assert.match(html, /<script src="\/Robotic-0\/github-pages\.js" defer><\/script>/);
   assert.match(
     html,

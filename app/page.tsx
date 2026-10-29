@@ -332,13 +332,14 @@ export default function Home() {
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
                 <strong>19.68</strong>
               </header>
-              <VerticalBarChart label="RoboDojo average Score comparison with selected VLA models from Table 5, October 26, 2026; not a complete leaderboard" max={22} items={[
-                { label: "SimpleMemVLA", shortLabel: "SimpleMem", value: 12.58 },
-                { label: "KinRT", value: 13.02 },
-                { label: "Hy-Embodied-0.5-VLA", shortLabel: "Hy-Embodied", value: 13.07 },
+              <VerticalBarChart label="RoboDojo average Score comparison with selected baselines from Figure 1 and the updated MR0 result from Table 5; not a complete leaderboard" max={22} items={[
+                { label: "VLACT", value: 10.66 },
+                { label: "InternVLA-A1.5", value: 11.15 },
+                { label: "π0.5", value: 11.41 },
+                { label: "Spatial Forcing", value: 12.38 },
                 { label: "MR0", value: 19.68, highlight: true },
               ]} />
-              <footer><b>Average SR 14.07%</b> · Selected VLA models · Table 5 · scale 0–22</footer>
+              <footer><b>Average SR 14.07%</b> · Baselines: Fig. 1 · MR0: Table 5 · scale 0–22</footer>
             </article>
 
             <article className="result-card">

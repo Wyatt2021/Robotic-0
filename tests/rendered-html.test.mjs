@@ -127,13 +127,15 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
     .map((match) => match[1])
     .find((card) => /<h4>RoboDojo<\/h4>/.test(card));
   assert.ok(roboDojoCard, "Missing RoboDojo model-comparison card");
-  for (const value of ["SimpleMemVLA", "12.58", "KinRT", "13.02", "Hy-Embodied", "13.07", "MR0", "19.68"]) {
+  for (const value of ["VLACT", "10.66", "InternVLA-A1.5", "11.15", "π0.5", "11.41", "Spatial Forcing", "12.38", "MR0", "19.68"]) {
     assert.ok(roboDojoCard.includes(value), `Missing selected RoboDojo model or Score ${value}`);
   }
-  assert.match(roboDojoCard, /Selected VLA models/);
+  assert.match(roboDojoCard, /Baselines: Fig\. 1 · MR0: Table 5/);
+  assert.match(roboDojoCard, /selected baselines from Figure 1/);
+  assert.equal((roboDojoCard.match(/class="vertical-column/g) ?? []).length, 5);
   assert.match(roboDojoCard, /scale 0–22/);
   assert.match(roboDojoCard, /vertical-column highlight/);
-  assert.doesNotMatch(roboDojoCard, /General\.|Precision|Long-Horizon|Memory|Open|Xiaomi|Galaxea|DM0\.5|Rex-M1|Simate/);
+  assert.doesNotMatch(roboDojoCard, /General\.|Precision|Long-Horizon|Memory|Open|Xiaomi|Galaxea|DM0\.5|Rex-M1|Simate|SimpleMem|KinRT|Hy-Embodied/);
   assert.match(html, /Average SR 14\.07%/);
   assert.match(html, /initial-scene reference and latent-action history/);
   assert.match(html, /without the embodied-agent system/);
