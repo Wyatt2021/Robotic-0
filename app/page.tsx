@@ -123,7 +123,7 @@ export default function Home() {
           aria-label="Scrollable system overview"
         >
           <img
-            src="/assets/main-overview-20260902.svg?v=20261029-corrected"
+            src="/assets/main-overview-20260902.svg?v=20261029-figure1"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}

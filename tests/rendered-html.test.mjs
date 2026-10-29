@@ -24,7 +24,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   const html = await response.text();
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /main-overview-20260902\.svg\?v=20261029-corrected/);
+  assert.match(html, /main-overview-20260902\.svg\?v=20261029-figure1/);
   assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
@@ -258,6 +258,26 @@ test("keeps the original figure slots with localized paper corrections", async (
     // PDF artwork can contain both vector paths and original embedded images.
     assert.match(figure, /<(?:path|image|use)\b/);
   }
+});
+
+test("matches the overview RoboDojo baselines to Figure 1 while retaining the updated MR0 score", async () => {
+  const overview = await readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8");
+  const chart = overview.slice(overview.indexOf('<g id="robodojo-comparison"'));
+  const bars = [...chart.matchAll(/<rect data-model="([^"]+)" data-score="([^"]+)"[^>]*y="([^"]+)"[^>]*height="([^"]+)"[^>]*fill="([^"]+)"/g)];
+  assert.deepEqual(bars.map(([, model, score]) => [model, Number(score)]), [
+    ["VLACT", 10.66],
+    ["InternVLA-A1.5", 11.15],
+    ["π0.5", 11.41],
+    ["Spatial Forcing", 12.38],
+    ["MR0", 19.68],
+  ]);
+  for (const [, model, score, y, height, fill] of bars) {
+    assert.ok(Math.abs(Number(height) - Number(score) / 20 * 85) < 0.001);
+    assert.ok(Math.abs(Number(y) + Number(height) - 1008) < 0.001);
+    assert.equal(fill, model === "MR0" ? "#ffbd00" : "#969696");
+  }
+  assert.match(chart, /Fig\. 1 baselines · MR0: Table 5/);
+  assert.doesNotMatch(chart, /SimpleMem|KinRT|Hy-Embodied|14\.95/);
 });
 
 test("ships the exact revised technical report supplied for the October 29 update", async () => {
