@@ -24,8 +24,8 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   const html = await response.text();
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /system-overview/);
-  assert.doesNotMatch(html, /main-overview-20260902\.svg/);
+  assert.match(html, /main-overview-20260902\.svg\?v=20261029-corrected/);
+  assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
   assert.match(html, />Method</);
@@ -39,7 +39,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /Page reading progress/);
   assert.match(html, /15,060h/);
   assert.ok(
-    html.indexOf("system-overview") <
+    html.indexOf("main-overview-20260902.svg") <
       html.indexOf("Meituan-Robotics-0 (MR0) is a vision-language-action foundation model"),
   );
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
@@ -66,8 +66,10 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /AgiBot G1/);
   assert.match(html, /RealMan Aida-L/);
   assert.match(html, /RoboTwin 2\.0 overall success-rate comparison, shown on an 80 to 95 percent scale/);
-  assert.match(html, /Task-specific progress scores under matched HG-DAgger post-training/);
-  assert.match(html, /PS scale 0\.6–1/);
+  assert.match(html, /Average real-robot success rate and progress score under matched HG-DAgger post-training/);
+  assert.match(html, /scale 60–100%/);
+  assert.match(html, /0\.78 \/ 0\.91/);
+  assert.match(html, /\+0\.09 SR \/ \+0\.06 PS/);
   assert.match(html, /vertical-chart/);
   assert.match(html, /grouped-vertical-chart/);
   assert.doesNotMatch(html, /Agent trace metrics|≈2 Hz|10 events|6 events/);
@@ -76,10 +78,11 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /0\.08 → 0\.86|15\.27|>Score</);
   assert.doesNotMatch(html, /Capability Breakdown|RoboTwin clean-scene|RoboTwin randomized-scene/);
   assert.doesNotMatch(html, /Data Curation|data-curation\.png/);
-  assert.match(html, /vision-language-data-20261029\.svg/);
+  assert.match(html, /vision-language-data\.svg/);
   assert.doesNotMatch(html, /action-head\.svg/);
   assert.match(html, /embodied-agent-20261029\.svg/);
-  assert.match(html, /rollback-20261029\.svg/);
+  assert.doesNotMatch(html, /rollback-20261029\.svg|vision-language-data-20261029\.svg/);
+  assert.equal((html.match(/<img\b/g) ?? []).length, 3);
   assert.match(html, /aria-label="Scrollable event-driven agent architecture" tabindex="0"/);
   assert.doesNotMatch(html, /main-overview\.png|vision-language-data\.png|action-head\.png|embodied-agent\.png/);
   assert.match(html, /event-retrieval-first-frame\.jpg/);
@@ -117,16 +120,22 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /og:image/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 
-  // Audit numerical claims against the revised paper, not its stale overview figure.
+  // Keep the original page structure while auditing corrected paper results.
   assert.doesNotMatch(html, /14\.95|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
   assert.doesNotMatch(html, /without benchmark-specific enhancements|outcome-labeled autonomous rollouts/);
-  for (const score of ["14.59", "20.40", "27.78", "32.23", "3.40"]) {
-    assert.ok(html.includes(score), `Missing revised RoboDojo capability Score ${score}`);
+  const roboDojoCard = [...html.matchAll(/<article class="result-card">([\s\S]*?)<\/article>/g)]
+    .map((match) => match[1])
+    .find((card) => /<h4>RoboDojo<\/h4>/.test(card));
+  assert.ok(roboDojoCard, "Missing RoboDojo model-comparison card");
+  for (const value of ["SimpleMemVLA", "12.58", "KinRT", "13.02", "Hy-Embodied", "13.07", "MR0", "19.68"]) {
+    assert.ok(roboDojoCard.includes(value), `Missing selected RoboDojo model or Score ${value}`);
   }
+  assert.match(roboDojoCard, /Selected VLA models/);
+  assert.match(roboDojoCard, /scale 0–22/);
+  assert.match(roboDojoCard, /vertical-column highlight/);
+  assert.doesNotMatch(roboDojoCard, /General\.|Precision|Long-Horizon|Memory|Open|Xiaomi|Galaxea|DM0\.5|Rex-M1|Simate/);
   assert.match(html, /Average SR 14\.07%/);
-  assert.match(html, /Score 3\.40 \/ SR 3\.00%/);
   assert.match(html, /initial-scene reference and latent-action history/);
-  assert.match(html, /most recent 20 seconds/);
   assert.match(html, /without the embodied-agent system/);
   assert.match(html, /CFG-DAgger compared with RECAP on Ethernet insertion using the same demonstrations and Rollback episodes/);
   assert.match(html, /RECAP: 0\.60/);
@@ -134,10 +143,8 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /CFG-DAgger: 0\.70/);
   assert.match(html, /CFG-DAgger: 0\.90/);
   assert.match(html, /0\.70 \/ 0\.90/);
-  assert.match(html, /133 → 117 s/);
   assert.match(html, /time-based execution efficiency/);
-  assert.match(html, /approximately 13\.6k/);
-  assert.match(html, /150\.7M VLM samples from 64 sub-datasets/);
+  assert.doesNotMatch(html, /150\.7M VLM samples from 64 sub-datasets/);
   assert.match(html, /Alternative post-training algorithms: HG-DAgger, RECAP, and CFG-DAgger/);
   assert.match(html, /trained anew from the same/);
   assert.match(html, /Meituan-Robotics-0\.pdf\?v=20261029/);
@@ -231,11 +238,11 @@ test("ships every project demo at high-bitrate source quality in a browser-compa
   ]);
 });
 
-test("serves the revised paper figures as cropped SVG assets", async () => {
+test("keeps the original figure slots with localized paper corrections", async () => {
   const figures = await Promise.all([
-    readFile(new URL("../public/assets/vision-language-data-20261029.svg", import.meta.url), "utf8"),
+    readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8"),
+    readFile(new URL("../public/assets/vision-language-data.svg", import.meta.url), "utf8"),
     readFile(new URL("../public/assets/embodied-agent-20261029.svg", import.meta.url), "utf8"),
-    readFile(new URL("../public/assets/rollback-20261029.svg", import.meta.url), "utf8"),
   ]);
 
   for (const figure of figures) {

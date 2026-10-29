@@ -279,7 +279,6 @@ nav::-webkit-scrollbar { display: none; }
 .alignment-steps strong:last-of-type { background: var(--yellow); }
 .alignment-steps i { color: #8d8d87; font-size: 11px; font-style: normal; }
 .stage-outcome { width: fit-content; margin-top: auto; padding-top: 24px; color: #3f3f3b; background: linear-gradient(var(--yellow), var(--yellow)) no-repeat 0 100% / 0 2px; font-size: 9px; font-weight: 680; letter-spacing: .07em; text-transform: uppercase; transition: background-size .24s ease, color .2s ease; }
-.method-note { margin: 26px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
 
 @media (hover: hover) and (pointer: fine) {
   .training-timeline:has(.training-stage:hover) .training-stage:not(:hover) {

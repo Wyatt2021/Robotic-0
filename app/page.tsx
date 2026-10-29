@@ -2,11 +2,11 @@ import CopyCitation from "./copy-citation";
 import ProjectNav from "./project-nav";
 import RevealOnView from "./reveal-on-view";
 import RobotDataFigure from "./robot-data-figure";
-import SystemOverview from "./system-overview";
 import VideoPlayer from "./video-player";
 
 type BarItem = {
   label: string;
+  shortLabel?: string;
   value: number;
   display?: string;
   highlight?: boolean;
@@ -37,7 +37,7 @@ function VerticalBarChart({
         <div className={`vertical-column${item.highlight ? " highlight" : ""}`} key={item.label}>
           <b>{item.display ?? item.value}</b>
           <div className="vertical-track"><span style={{ height: `${Math.max(0, Math.min(100, (item.value - min) / (max - min) * 100))}%`, transitionDelay: `${index * 65}ms` }} /></div>
-          <span>{item.label}</span>
+          <span title={item.label}>{item.shortLabel ?? item.label}</span>
         </div>
       ))}
     </div>
@@ -117,7 +117,19 @@ export default function Home() {
         <div className="section-heading">
           <h2>Overview</h2>
         </div>
-        <SystemOverview />
+        <figure
+          className="main-figure overview-main-figure"
+          role="region"
+          aria-label="Scrollable system overview"
+        >
+          <img
+            src="/assets/main-overview-20260902.svg?v=20261029-corrected"
+            alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
+            width={1763}
+            height={1170}
+            loading="lazy"
+          />
+        </figure>
         <div className="overview-copy">
           <p>
             Meituan-Robotics-0 (MR0) is a vision-language-action foundation model
@@ -134,8 +146,8 @@ export default function Home() {
           </p>
         </div>
         <div className="fact-grid" aria-label="Key results">
-          <div><strong>147M</strong><span>curated vision-language samples</span></div>
-          <div><strong>15,060h</strong><span>curated robot trajectory data</span></div>
+          <div><strong>147M</strong><span>vision-language samples</span></div>
+          <div><strong>15,060h</strong><span>robot trajectory data</span></div>
           <div><strong>93.6%</strong><span>RoboTwin 2.0 overall SR</span></div>
           <div><strong>19.68 / 14.07%</strong><span>RoboDojo avg. Score / SR</span></div>
         </div>
@@ -167,10 +179,10 @@ export default function Home() {
           </div>
           <figure className="paper-figure wide-figure">
             <img
-              src="/assets/vision-language-data-20261029.svg"
+              src="/assets/vision-language-data.svg"
               alt="Composition and examples of the vision-language dataset"
-              width={422}
-              height={182}
+              width={2712}
+              height={1206}
               loading="lazy"
             />
           </figure>
@@ -224,7 +236,7 @@ export default function Home() {
               <div className="training-stage-body">
                 <small>Pre-training</small>
                 <h4>FAST + VLM</h4>
-                <p>Train the Qwen3.5-4B backbone end to end with vision-language supervision and discrete FAST action tokens using a shared next-token objective.</p>
+                <p>Co-train vision-language supervision and discrete FAST action tokens to align multimodal features with robot behavior.</p>
                 <strong className="stage-outcome">Broad action priors</strong>
               </div>
             </article>
@@ -234,7 +246,7 @@ export default function Home() {
               <div className="training-stage-body">
                 <small>Mid-training</small>
                 <h4>MMDiT + JiT</h4>
-                <p>Initialize a continuous MMDiT action head with JiT clean-sample prediction, masked flow matching, and a unified end-effector representation.</p>
+                <p>Replace discrete action prediction with continuous flow matching over a unified end-effector representation.</p>
                 <strong className="stage-outcome">Coherent action chunks</strong>
               </div>
             </article>
@@ -251,37 +263,6 @@ export default function Home() {
               </div>
             </article>
           </div>
-          <p className="method-note">
-            The stage-specific pre-training mixture contains approximately 13.6k
-            hours of VLA data and 150.7M VLM samples from 64 sub-datasets. These
-            effective training pools are distinct from the curated inventories
-            summarized in Data.
-          </p>
-        </div>
-
-        <div className="subsection">
-          <div className="subsection-copy">
-            <h3>Rollback and CFG-DAgger</h3>
-            <p>
-              Near a failure, an operator returns the robot to an earlier recorded
-              state and provides a corrective continuation. Rollback pairs the
-              replaced policy segment with its human replacement from the same
-              anchor. CFG-DAgger treats demonstrations and human corrections as
-              positive data and replaced segments as negative data, independently
-              of the final episode outcome.
-            </p>
-            <p>
-              A shared policy learns positive, negative, and unconditional branches;
-              classifier-free guidance combines positive and negative predictions
-              at inference. This avoids value-model training, advantage labeling,
-              and additional autonomous rollout collection. In the matched
-              comparison, RECAP instead reconstructs complete trajectories from
-              the same recorded Rollback branches for value and advantage learning.
-            </p>
-          </div>
-          <figure className="paper-figure wide-figure">
-            <img src="/assets/rollback-20261029.svg" alt="Rollback pairs replaced policy segments with human corrections from a shared historical anchor" width={419} height={125} loading="lazy" />
-          </figure>
         </div>
 
         <div className="subsection" id="agent">
@@ -327,7 +308,8 @@ export default function Home() {
             <p>
               We evaluate MR0 on RoboTwin 2.0, RoboDojo, and three real-robot
               tasks: letter-block placement, garment folding, and Ethernet
-              insertion.
+              insertion. RoboDojo uses an initial-scene reference and latent-action
+              history, without the embodied-agent system or RL-based post-training.
             </p>
           </div>
           <RevealOnView className="result-card-grid">
@@ -350,26 +332,25 @@ export default function Home() {
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
                 <strong>19.68</strong>
               </header>
-              <VerticalBarChart label="MR0 RoboDojo capability Scores from Table 5; these are not model rankings" max={40} items={[
-                { label: "General.", value: 14.59 },
-                { label: "Precision", value: 20.40, display: "20.40" },
-                { label: "Long-Horizon", value: 27.78 },
-                { label: "Memory", value: 32.23 },
-                { label: "Open", value: 3.40, display: "3.40" },
+              <VerticalBarChart label="RoboDojo average Score comparison with selected VLA models from Table 5, October 26, 2026; not a complete leaderboard" max={22} items={[
+                { label: "SimpleMemVLA", shortLabel: "SimpleMem", value: 12.58 },
+                { label: "KinRT", value: 13.02 },
+                { label: "Hy-Embodied-0.5-VLA", shortLabel: "Hy-Embodied", value: 13.07 },
+                { label: "MR0", value: 19.68, highlight: true },
               ]} />
-              <footer><b>Average SR 14.07%</b> · Table 5, Oct. 26, 2026 · Score scale 0–40</footer>
+              <footer><b>Average SR 14.07%</b> · Selected VLA models · Table 5 · scale 0–22</footer>
             </article>
 
             <article className="result-card">
               <header>
-                <div><span>Matched HG-DAgger · PS</span><h4>Real Robot</h4></div>
-                <strong className="metric-pair">0.96 / 0.93</strong>
+                <div><span>Matched HG-DAgger · Average</span><h4>Real Robot</h4></div>
+                <strong className="metric-pair">0.78 / 0.91</strong>
               </header>
-              <GroupedVerticalChart label="Task-specific progress scores under matched HG-DAgger post-training, shown on a 0.6 to 1 scale" min={0.6} max={1} series={["π0.5", "MR0"]} groups={[
-                { label: "Letter-block PS", bars: [{ label: "π0.5", value: 0.90, display: "0.90" }, { label: "MR0", value: 0.96, highlight: true }] },
-                { label: "Garment PS", bars: [{ label: "π0.5", value: 0.91 }, { label: "MR0", value: 0.93, highlight: true }] },
+              <GroupedVerticalChart label="Average real-robot success rate and progress score under matched HG-DAgger post-training, shown on a 60 to 100 percent scale" min={0.6} max={1} series={["π0.5", "MR0"]} groups={[
+                { label: "Avg. SR", bars: [{ label: "π0.5", value: 0.69 }, { label: "MR0", value: 0.78, highlight: true }] },
+                { label: "Avg. PS", bars: [{ label: "π0.5", value: 0.85 }, { label: "MR0", value: 0.91, highlight: true }] },
               ]} />
-              <footer><b>Garment completion: 133 → 117 s</b> · PS scale 0.6–1</footer>
+              <footer><b>+0.09 SR / +0.06 PS</b> vs. π0.5 · scale 60–100%</footer>
             </article>
 
             <article className="result-card">
@@ -385,13 +366,6 @@ export default function Home() {
             </article>
 
           </RevealOnView>
-          <p className="method-note">
-            RoboDojo uses an initial-scene reference and latent-action history
-            over the most recent 20 seconds, without the embodied-agent system
-            or RL-based post-training. Open-vocabulary instruction following
-            remains a limitation (Score 3.40 / SR 3.00%). Real-robot charts keep
-            the matched HG-DAgger study separate from the Rollback comparison.
-          </p>
         </div>
       </section>
 

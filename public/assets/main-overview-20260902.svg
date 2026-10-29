@@ -2452,7 +2452,7 @@
 </g>
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
 <use xlink:href="#glyph-0-17" x="2227.661999" y="1144.32"/>
-<use xlink:href="#glyph-0-17" x="2238.787998" y="1144.32"/>
+<text x="2238.787998" y="1144.32" font-family="Arial, sans-serif" font-size="20" font-weight="700">6</text>
 <use xlink:href="#glyph-0-17" x="2249.913998" y="1144.32"/>
 </g>
 <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
@@ -6544,5 +6544,70 @@
 <g clip-path="url(#clip-65)">
 <use xlink:href="#source-245" transform="matrix(0.123924, 0, 0, 0.123982, 2379.404, 1203.2573)"/>
 </g>
+</g>
+<!-- Local numerical and label corrections only; retain the original overview layout. -->
+<g id="latest-paper-corrections" transform="translate(804.484 1061.304) scale(1.101590625)" font-family="Arial, sans-serif">
+  <!-- Stage 2 transfers the backbone; Stage 3 compares independent algorithms. -->
+  <rect x="77" y="553" width="132" height="66" fill="#fcf9f0"/>
+  <text x="143" y="581" text-anchor="middle" font-size="18" font-weight="700">Backbone<tspan x="143" dy="22">Transfer</tspan></text>
+  <rect x="72" y="716" width="74" height="63" fill="#fcf9f0"/>
+  <rect x="193" y="716" width="75" height="63" fill="#fcf9f0"/>
+  <rect x="312" y="716" width="75" height="63" fill="#fcf9f0"/>
+  <rect x="155" y="728" width="30" height="44" fill="#fff"/>
+  <rect x="275" y="728" width="31" height="44" fill="#fff"/>
+  <text x="109" y="744" text-anchor="middle" font-size="18" font-weight="700">HG-<tspan x="109" dy="22">DAgger</tspan></text>
+  <text x="230" y="754" text-anchor="middle" font-size="18" font-weight="700">RECAP</text>
+  <text x="350" y="744" text-anchor="middle" font-size="18" font-weight="700">CFG-<tspan x="350" dy="22">DAgger</tspan></text>
+  <text x="170" y="755" text-anchor="middle" font-size="14" fill="#777">or</text>
+  <text x="290" y="755" text-anchor="middle" font-size="14" fill="#777">or</text>
+  <!-- Neutral heading: the figure does not assert a benchmark ranking. -->
+  <rect x="1174" y="832" width="239" height="27" fill="#fff"/>
+  <text x="1284" y="852" text-anchor="middle" font-size="22" font-weight="700" fill="#ed9e0b">Evaluation</text>
+  <!-- Real-robot averages reported in Figure 10; HG-DAgger comparison. -->
+  <rect x="994" y="906" width="177" height="129" fill="#fff"/>
+  <g font-size="6" fill="#555">
+    <rect x="1049" y="910" width="6" height="5" fill="#969696"/>
+    <text x="1058" y="915">π0.5</text>
+    <rect x="1091" y="910" width="6" height="5" fill="#ffbd00"/>
+    <text x="1100" y="915">MR0</text>
+    <path d="M1016 923V1008H1164" stroke="#bfbfbf" stroke-width=".6" fill="none"/>
+    <path d="M1016 923H1164M1016 965.5H1164" stroke="#e7e7e7" stroke-width=".4" fill="none"/>
+    <text x="1011" y="926" text-anchor="end">1.0</text><text x="1011" y="968" text-anchor="end">0.5</text><text x="1011" y="1010" text-anchor="end">0</text>
+    <rect x="1035" y="949.35" width="17" height="58.65" fill="#969696"/>
+    <rect x="1057" y="941.7" width="17" height="66.3" fill="#ffbd00"/>
+    <rect x="1105" y="935.75" width="17" height="72.25" fill="#969696"/>
+    <rect x="1127" y="930.65" width="17" height="77.35" fill="#ffbd00"/>
+    <g text-anchor="middle" font-size="7" fill="#333"><text x="1043.5" y="946">0.69</text><text x="1065.5" y="938">0.78</text><text x="1113.5" y="932">0.85</text><text x="1135.5" y="927">0.91</text></g>
+    <text x="1054" y="1018" text-anchor="middle" font-size="7">Avg. SR</text><text x="1124" y="1018" text-anchor="middle" font-size="7">Avg. PS</text>
+    <text x="1090" y="1030" text-anchor="middle">Matched HG-DAgger</text>
+  </g>
+  <!-- RoboTwin 2.0 overall SR, Table 4. -->
+  <rect x="1181" y="909" width="187" height="128" fill="#fff"/>
+  <g font-size="6" fill="#555">
+    <path d="M1195 923V1008H1363" stroke="#bfbfbf" stroke-width=".6" fill="none"/>
+    <path d="M1195 923H1363M1195 951.333H1363M1195 979.667H1363" stroke="#e7e7e7" stroke-width=".4" fill="none"/>
+    <text x="1191" y="926" text-anchor="end">95</text><text x="1191" y="954" text-anchor="end">90</text><text x="1191" y="982" text-anchor="end">85</text><text x="1191" y="1010" text-anchor="end">80</text>
+    <rect x="1208" y="976.267" width="19" height="31.733" fill="#969696"/>
+    <rect x="1250" y="941.133" width="19" height="66.867" fill="#969696"/>
+    <rect x="1292" y="933.2" width="19" height="74.8" fill="#969696"/>
+    <rect x="1334" y="930.933" width="19" height="77.067" fill="#ffbd00"/>
+    <g text-anchor="middle" font-size="7" fill="#333"><text x="1217.5" y="973">85.6</text><text x="1259.5" y="938">91.8</text><text x="1301.5" y="930">93.2</text><text x="1343.5" y="927">93.6</text></g>
+    <g text-anchor="middle"><text x="1217.5" y="1018">ABot-M0</text><text x="1259.5" y="1018">Fast-WAM</text><text x="1301.5" y="1018">InternVLA-<tspan x="1301.5" dy="7">A1.5</tspan></text><text x="1343.5" y="1018">MR0</text></g>
+    <text x="1279" y="1034" text-anchor="middle">Overall SR (%) · scale 80–95</text>
+  </g>
+  <!-- Selected lower-scoring VLA entries from the paper's Oct. 26 Table 5. -->
+  <rect x="1376" y="909" width="198" height="128" fill="#fff"/>
+  <g font-size="6" fill="#555">
+    <path d="M1390 923V1008H1570" stroke="#bfbfbf" stroke-width=".6" fill="none"/>
+    <path d="M1390 923H1570M1390 965.5H1570" stroke="#e7e7e7" stroke-width=".4" fill="none"/>
+    <text x="1386" y="926" text-anchor="end">20</text><text x="1386" y="968" text-anchor="end">10</text><text x="1386" y="1010" text-anchor="end">0</text>
+    <rect x="1402" y="954.535" width="22" height="53.465" fill="#969696"/>
+    <rect x="1447" y="952.665" width="22" height="55.335" fill="#969696"/>
+    <rect x="1492" y="952.4525" width="22" height="55.5475" fill="#969696"/>
+    <rect x="1537" y="924.36" width="22" height="83.64" fill="#ffbd00"/>
+    <g text-anchor="middle" font-size="7" fill="#333"><text x="1413" y="951">12.58</text><text x="1458" y="949">13.02</text><text x="1503" y="949">13.07</text><text x="1548" y="921">19.68</text></g>
+    <g text-anchor="middle" font-size="5.8"><text x="1413" y="1018">SimpleMemVLA</text><text x="1458" y="1018">KinRT</text><text x="1503" y="1018">Hy-Embodied<tspan x="1503" dy="7">0.5-VLA</tspan></text><text x="1548" y="1018">MR0</text></g>
+    <text x="1480" y="1034" text-anchor="middle">Selected VLA · Average Score</text>
+  </g>
 </g>
 </svg>
