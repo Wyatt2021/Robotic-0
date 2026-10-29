@@ -30,8 +30,8 @@
     "selectedBaselines": true,
     "models": [
       { "label": "Hy-Embodied-0.5-VLA", "value": 8.80 },
-      { "label": "MR0", "value": 14.07, "highlight": true },
       { "label": "Xiaomi-Robotics-1", "value": 13.93 },
+      { "label": "MR0", "value": 14.07, "highlight": true },
       { "label": "GalaxeaVLA (G0.5)", "value": 14.88 },
       { "label": "DM0.5", "value": 19.34 },
       { "label": "Rex-M1 Preview", "value": 27.44 },

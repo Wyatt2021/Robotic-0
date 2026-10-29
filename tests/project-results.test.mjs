@@ -22,7 +22,7 @@ test("keeps benchmark sources and post-training protocols separate", () => {
     ["ABot-M0", 85.6], ["Fast-WAM", 91.8], ["InternVLA-A1.5", 93.2], ["MR0", 93.6],
   ]);
   assert.deepEqual(results.robodojo.models.map(({ label, value }) => [label, value]), [
-    ["Hy-Embodied-0.5-VLA", 8.80], ["MR0", 14.07], ["Xiaomi-Robotics-1", 13.93],
+    ["Hy-Embodied-0.5-VLA", 8.80], ["Xiaomi-Robotics-1", 13.93], ["MR0", 14.07],
     ["GalaxeaVLA (G0.5)", 14.88], ["DM0.5", 19.34], ["Rex-M1 Preview", 27.44], ["Simate-beta", 27.96],
   ]);
   assert.equal(Object.hasOwn(results.robodojo, "mr0SR"), false, "Average SR is stored in the chart values");
