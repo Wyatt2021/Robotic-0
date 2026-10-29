@@ -148,21 +148,21 @@ export default function Home() {
           tabIndex={0}
         >
           <img
-            src="/assets/main-overview-20260902.svg?v=20261029-refined"
+            src="/assets/main-overview-20260902.svg?v=20261029-robodojo-fig1"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}
             loading="lazy"
           />
         </figure>
-        <FigureViewer src="/assets/main-overview-20260902.svg?v=20261029-refined" title="System overview" />
+        <FigureViewer src="/assets/main-overview-20260902.svg?v=20261029-robodojo-fig1" title="System overview" />
         <div className="overview-copy">
           <p>
             Meituan-Robotics-0 (MR0) is a vision-language-action foundation model
             and embodied-agent system for stationary-base desktop manipulation.
             It combines {results.data.visionLanguageSamples / 1_000_000} million vision-language samples with {number(results.data.robotHours)} hours of
             robot trajectories, then transfers these priors to continuous control
-            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0 and an average Score of ${robodojoMR0.value} with ${results.robodojo.mr0SR}% success on RoboDojo using compact historical context. `}
+            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0 and an average Score of ${robodojoMR0.value} on RoboDojo, as reported in Figure 1. `}
             Real-world post-training uses demonstrations and human corrections;
             Rollback pairs replaced policy segments with corrective continuations
             for CFG-DAgger. The event-driven agent adds persistent task memory and
@@ -173,7 +173,7 @@ export default function Home() {
           <div><strong>{`${results.data.visionLanguageSamples / 1_000_000}M`}</strong><span>vision-language samples</span></div>
           <div><strong>{`${number(results.data.robotHours)}h`}</strong><span>robot trajectory data</span></div>
           <div><strong>{`${robotwinMR0.value}%`}</strong><span>RoboTwin 2.0 overall SR</span></div>
-          <div><strong>{`${robodojoMR0.value} / ${results.robodojo.mr0SR}%`}</strong><span>RoboDojo avg. Score / SR</span></div>
+          <div><strong>{fixed(robodojoMR0.value)}</strong><span>RoboDojo avg. Score</span></div>
         </div>
       </section>
 
@@ -334,8 +334,8 @@ export default function Home() {
             <p>
               We evaluate MR0 on RoboTwin 2.0, RoboDojo, and three real-robot
               tasks: letter-block placement, garment folding, and Ethernet
-              insertion. RoboDojo uses an initial-scene reference and latent-action
-              history, without the embodied-agent system or RL-based post-training.
+              insertion. The RoboDojo comparison follows the selected methods and
+              average Scores reported in Figure 1.
             </p>
           </div>
           <RevealOnView className="result-card-grid">
@@ -353,8 +353,8 @@ export default function Home() {
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
                 <strong>{fixed(robodojoMR0.value)}</strong>
               </header>
-              <VerticalBarChart label={`RoboDojo average Score comparison with selected baselines from ${results.robodojo.sources.baselines} and the updated MR0 result from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
-              <footer><b>{`Average SR ${results.robodojo.mr0SR}%`}</b><span>{`Selected baselines: ${results.robodojo.sources.baselines.replace("Figure ", "Fig. ")} · MR0: ${results.robodojo.sources.mr0} · scale ${results.robodojo.min}–${results.robodojo.max}`}</span></footer>
+              <VerticalBarChart label={`RoboDojo average Score comparison with selected methods from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
+              <footer><b>{results.robodojo.sources.mr0}</b><span>{`Selected methods · scale ${results.robodojo.min}–${results.robodojo.max}`}</span></footer>
             </article>
 
             <article className="result-card">

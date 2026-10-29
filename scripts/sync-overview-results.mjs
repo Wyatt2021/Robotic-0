@@ -35,7 +35,6 @@ export function validateResults(results) {
   }
   // The compact overview retains its original 0–20 Score axis.
   for (const model of results.robodojo.models) assertNumber(model.value, 0, 20, `overview RoboDojo ${model.label}`);
-  assertNumber(results.robodojo.mr0SR, 0, 100, "RoboDojo success rate");
   for (const key of ["realRobot", "ethernetRollback"]) {
     for (const method of ["baseline", "mr0"]) {
       for (const metric of ["sr", "ps"]) assertNumber(results[key][method][metric], 0, 1, `${key} ${method} ${metric}`);
@@ -100,7 +99,7 @@ ${twin.models.map((model, index) => bar({ ...model, x: 1208 + index * 42, width:
     <g text-anchor="middle">${twin.models.map((model, index) => modelLabel(model.label, 1217.5 + index * 42)).join("")}</g>
     <text x="1279" y="1034" text-anchor="middle">Overall SR (%) · scale ${twin.min}–${twin.max}</text>
   </g>
-  <!-- ${escapeXml(dojo.sources.baselines)} baselines, with MR0 updated to the latest ${escapeXml(dojo.sources.mr0)} result. -->
+  <!-- RoboDojo selected-method comparison from ${escapeXml(dojo.sources.mr0)}. -->
   <rect x="1370" y="909" width="204" height="128" fill="#fff"/>
   <g id="robodojo-comparison" font-size="6" fill="#555">
     <path d="M1390 923V1008H1570" stroke="#bfbfbf" stroke-width=".6" fill="none"/>
@@ -109,7 +108,7 @@ ${twin.models.map((model, index) => bar({ ...model, x: 1208 + index * 42, width:
 ${dojo.models.map((model, index) => bar({ ...model, x: 1399 + index * 36, width: 18, max: 20 })).join("\n")}
     <g text-anchor="middle" font-size="7" fill="#333">${dojo.models.map((model, index) => `<text x="${1408 + index * 36}" y="${n(plotBottom - model.value / 20 * plotHeight - 3.5, 1)}">${model.value.toFixed(2)}</text>`).join("")}</g>
     <g text-anchor="middle" font-size="5.8">${dojo.models.map((model, index) => modelLabel(model.label, 1408 + index * 36)).join("")}</g>
-    <text x="1480" y="1034" text-anchor="middle">${sourceLabel(dojo.sources.baselines)} baselines · MR0: ${sourceLabel(dojo.sources.mr0)}</text>
+    <text x="1480" y="1034" text-anchor="middle">${sourceLabel(dojo.sources.mr0)} · selected methods</text>
   </g>
 ${endMarker}`;
 }
