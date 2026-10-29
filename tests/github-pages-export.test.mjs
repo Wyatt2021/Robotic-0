@@ -13,22 +13,23 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.match(html, /name="robots" content="noindex, nofollow, nocache"/);
   assert.match(html, /\/Robotic-0\/_next\/static\/css\//);
   assert.match(html, /\/Robotic-0\/video\/vla_demo_01_en\.mp4/);
-  assert.match(html, /\/Robotic-0\/assets\/main-overview-20260902\.svg\?v=20261029-figure1/);
+  assert.match(html, /\/Robotic-0\/assets\/main-overview-20260902\.svg\?v=20261029-refined/);
   assert.match(html, /\/Robotic-0\/assets\/vision-language-data\.svg/);
   assert.match(html, /\/Robotic-0\/assets\/embodied-agent-20261029\.svg/);
   assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger|rollback-20261029\.svg/);
   assert.match(html, /\/Robotic-0\/Meituan-Robotics-0\.pdf\?v=20261029/);
   assert.match(html, /19\.68 \/ 14\.07%/);
-  assert.match(html, /0\.70 \/ 0\.90/);
+  assert.match(html, /aria-label="SR 0\.70, PS 0\.90"/);
   assert.match(html, /CFG-DAgger/);
   assert.doesNotMatch(html, /14\.95|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
-  assert.match(html, /Baselines: Fig\. 1 · MR0: Table 5/);
+  assert.match(html, /Selected baselines: Fig\. 1 · MR0: Table 5/);
   assert.match(html, /VLACT/);
   assert.match(html, /InternVLA-A1\.5/);
   assert.match(html, /π0\.5/);
   assert.match(html, /Spatial Forcing/);
   assert.doesNotMatch(html, /SimpleMemVLA|KinRT|Hy-Embodied/);
   assert.match(html, /<script src="\/Robotic-0\/github-pages\.js" defer><\/script>/);
+  assert.match(html, /<script src="\/Robotic-0\/figure-viewer\.js" defer><\/script>/);
   assert.match(
     html,
     /property="og:image" content="https:\/\/wyatt2021\.github\.io\/Robotic-0\/og\.png"/,
@@ -75,6 +76,7 @@ test("exports a self-contained GitHub Pages project site", async () => {
     access(new URL("video/vla_demo_01_en.mp4", output)),
     access(new URL("Meituan-Robotics-0.pdf", output)),
     access(new URL("github-pages.js", output)),
+    access(new URL("figure-viewer.js", output)),
     access(new URL("robots.txt", output)),
     access(new URL(".nojekyll", output)),
   ]);

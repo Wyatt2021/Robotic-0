@@ -22,9 +22,17 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
+  const readableHtml = html.replace(/<!--[\s\S]*?-->/g, "");
+  assert.match(readableHtml, /reaches 93\.6% success/);
+  assert.match(readableHtml, /with 14\.07% success/);
+  assert.match(readableHtml, /context\. Real-world/);
+  assert.equal((html.match(/data-figure-zoom="true"|data-figure-zoom=""/g) ?? []).length, 3);
+  assert.match(html, /aria-label="View System overview at full size"/);
+  assert.match(html, /aria-label="View Vision-language data at full size"/);
+  assert.match(html, /aria-label="View Event-driven agent at full size"/);
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /main-overview-20260902\.svg\?v=20261029-figure1/);
+  assert.match(html, /main-overview-20260902\.svg\?v=20261029-refined/);
   assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
@@ -68,12 +76,13 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /RoboTwin 2\.0 overall success-rate comparison, shown on an 80 to 95 percent scale/);
   assert.match(html, /Average real-robot success rate and progress score under matched HG-DAgger post-training/);
   assert.match(html, /scale 60–100%/);
-  assert.match(html, /0\.78 \/ 0\.91/);
+  assert.match(html, /class="metric-pair" role="group" aria-label="SR 0\.78, PS 0\.91"/);
   assert.match(html, /\+0\.09 SR \/ \+0\.06 PS/);
   assert.match(html, /vertical-chart/);
   assert.match(html, /grouped-vertical-chart/);
   assert.doesNotMatch(html, /Agent trace metrics|≈2 Hz|10 events|6 events/);
-  assert.match(html, /\+0\.4/);
+  assert.match(html, /\+0\.4 pp/);
+  assert.match(html, /vertical-scale/);
   assert.match(html, /\+0\.10 SR \/ \+0\.23 PS/);
   assert.doesNotMatch(html, /0\.08 → 0\.86|15\.27|>Score</);
   assert.doesNotMatch(html, /Capability Breakdown|RoboTwin clean-scene|RoboTwin randomized-scene/);
@@ -130,7 +139,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   for (const value of ["VLACT", "10.66", "InternVLA-A1.5", "11.15", "π0.5", "11.41", "Spatial Forcing", "12.38", "MR0", "19.68"]) {
     assert.ok(roboDojoCard.includes(value), `Missing selected RoboDojo model or Score ${value}`);
   }
-  assert.match(roboDojoCard, /Baselines: Fig\. 1 · MR0: Table 5/);
+  assert.match(roboDojoCard, /Selected baselines: Fig\. 1 · MR0: Table 5/);
   assert.match(roboDojoCard, /selected baselines from Figure 1/);
   assert.equal((roboDojoCard.match(/class="vertical-column/g) ?? []).length, 5);
   assert.match(roboDojoCard, /scale 0–22/);
@@ -144,7 +153,9 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.match(html, /RECAP: 0\.67/);
   assert.match(html, /CFG-DAgger: 0\.70/);
   assert.match(html, /CFG-DAgger: 0\.90/);
-  assert.match(html, /0\.70 \/ 0\.90/);
+  assert.match(html, /class="metric-pair" role="group" aria-label="SR 0\.70, PS 0\.90"/);
+  assert.equal((html.match(/class="task-protocol">HG-DAgger</g) ?? []).length, 2);
+  assert.equal((html.match(/class="task-protocol">CFG-DAgger</g) ?? []).length, 1);
   assert.match(html, /time-based execution efficiency/);
   assert.doesNotMatch(html, /150\.7M VLM samples from 64 sub-datasets/);
   assert.match(html, /Alternative post-training algorithms: HG-DAgger, RECAP, and CFG-DAgger/);

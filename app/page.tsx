@@ -3,6 +3,8 @@ import ProjectNav from "./project-nav";
 import RevealOnView from "./reveal-on-view";
 import RobotDataFigure from "./robot-data-figure";
 import VideoPlayer from "./video-player";
+import FigureViewer from "./figure-viewer";
+import results from "../data/project-results.json";
 
 type BarItem = {
   label: string;
@@ -20,24 +22,45 @@ type VerticalGroup = {
 const citationText = `Meituan Robotics Team. “Meituan-Robotics-0: A Vision-Language-Action
 Foundation Model for Desktop Manipulation.” Technical Report, 2026.`;
 
+const robotwinMR0 = results.robotwin.models.find((model) => model.highlight)!;
+const robodojoMR0 = results.robodojo.models.find((model) => model.highlight)!;
+const robotwinComparison = results.robotwin.models.find((model) => model.label === "InternVLA-A1.5")!;
+const number = (value: number) => value.toLocaleString("en-US");
+const fixed = (value: number) => value.toFixed(2);
+const improvement = (value: number, baseline: number) => `+${fixed(value - baseline)}`;
+
+function MetricPair({ sr, ps }: { sr: number; ps: number }) {
+  return (
+    <div className="metric-pair" role="group" aria-label={`SR ${fixed(sr)}, PS ${fixed(ps)}`}>
+      <div><span>SR</span><strong>{fixed(sr)}</strong></div>
+      <div><span>PS</span><strong>{fixed(ps)}</strong></div>
+    </div>
+  );
+}
+
 function VerticalBarChart({
   items,
   min = 0,
   max,
   label,
+  ticks,
 }: {
   items: BarItem[];
   min?: number;
   max: number;
   label: string;
+  ticks?: number[];
 }) {
   return (
-    <div className="vertical-chart" role="group" aria-label={label}>
+    <div className={`vertical-chart${ticks ? " has-scale" : ""}`} role="group" aria-label={label}>
+      {ticks && <div className="vertical-scale" aria-hidden="true">
+        {ticks.map((tick) => <span key={tick} style={{ bottom: `${(tick - min) / (max - min) * 100}%` }}><i>{tick}</i></span>)}
+      </div>}
       {items.map((item, index) => (
         <div className={`vertical-column${item.highlight ? " highlight" : ""}`} key={item.label}>
           <b>{item.display ?? item.value}</b>
           <div className="vertical-track"><span style={{ height: `${Math.max(0, Math.min(100, (item.value - min) / (max - min) * 100))}%`, transitionDelay: `${index * 65}ms` }} /></div>
-          <span title={item.label}>{item.shortLabel ?? item.label}</span>
+          <span title={item.label}>{item.shortLabel ?? (item.label === "InternVLA-A1.5" ? <>InternVLA-<wbr />A1.5</> : item.label)}</span>
         </div>
       ))}
     </div>
@@ -117,28 +140,29 @@ export default function Home() {
         <div className="section-heading">
           <h2>Overview</h2>
         </div>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- This diagram scrolls horizontally on smaller screens. */}
         <figure
           className="main-figure overview-main-figure"
           role="region"
           aria-label="Scrollable system overview"
+          tabIndex={0}
         >
           <img
-            src="/assets/main-overview-20260902.svg?v=20261029-figure1"
+            src="/assets/main-overview-20260902.svg?v=20261029-refined"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}
             loading="lazy"
           />
         </figure>
+        <FigureViewer src="/assets/main-overview-20260902.svg?v=20261029-refined" title="System overview" />
         <div className="overview-copy">
           <p>
             Meituan-Robotics-0 (MR0) is a vision-language-action foundation model
             and embodied-agent system for stationary-base desktop manipulation.
-            It combines 147 million vision-language samples with 15,060 hours of
+            It combines {results.data.visionLanguageSamples / 1_000_000} million vision-language samples with {number(results.data.robotHours)} hours of
             robot trajectories, then transfers these priors to continuous control
-            through a three-stage training recipe. The standalone policy reaches
-            93.6% success on RoboTwin 2.0 and an average Score of 19.68 with
-            14.07% success on RoboDojo using compact historical context.
+            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0 and an average Score of ${robodojoMR0.value} with ${results.robodojo.mr0SR}% success on RoboDojo using compact historical context. `}
             Real-world post-training uses demonstrations and human corrections;
             Rollback pairs replaced policy segments with corrective continuations
             for CFG-DAgger. The event-driven agent adds persistent task memory and
@@ -146,10 +170,10 @@ export default function Home() {
           </p>
         </div>
         <div className="fact-grid" aria-label="Key results">
-          <div><strong>147M</strong><span>vision-language samples</span></div>
-          <div><strong>15,060h</strong><span>robot trajectory data</span></div>
-          <div><strong>93.6%</strong><span>RoboTwin 2.0 overall SR</span></div>
-          <div><strong>19.68 / 14.07%</strong><span>RoboDojo avg. Score / SR</span></div>
+          <div><strong>{`${results.data.visionLanguageSamples / 1_000_000}M`}</strong><span>vision-language samples</span></div>
+          <div><strong>{`${number(results.data.robotHours)}h`}</strong><span>robot trajectory data</span></div>
+          <div><strong>{`${robotwinMR0.value}%`}</strong><span>RoboTwin 2.0 overall SR</span></div>
+          <div><strong>{`${robodojoMR0.value} / ${results.robodojo.mr0SR}%`}</strong><span>RoboDojo avg. Score / SR</span></div>
         </div>
       </section>
 
@@ -169,7 +193,7 @@ export default function Home() {
           <div className="subsection-copy">
             <h3>Vision-Language Data</h3>
             <p>
-              147 million samples provide both general visual understanding and
+              {results.data.visionLanguageSamples / 1_000_000} million samples provide both general visual understanding and
               embodied grounding. General data accounts for 78% of the mixture,
               while embodied data contributes the remaining 22%. The embodied
               portion emphasizes robot-centric scenes, spatial relationships, and
@@ -186,13 +210,14 @@ export default function Home() {
               loading="lazy"
             />
           </figure>
+          <FigureViewer src="/assets/vision-language-data.svg" title="Vision-language data" />
         </div>
 
         <div className="subsection">
           <div className="subsection-copy">
             <h3>Robotic Manipulation Data</h3>
             <p>
-              The final robot corpus contains 15,060 hours of retained
+              The final robot corpus contains {number(results.data.robotHours)} hours of retained
               tabletop trajectories across 12 embodiments. It comprises 3,235
               hours of curated open-source real-robot data from RoboDesk, 7,530
               hours of licensed real-robot data, and 4,295 hours of open
@@ -288,6 +313,7 @@ export default function Home() {
               loading="lazy"
             />
           </figure>
+          <FigureViewer src="/assets/embodied-agent-20261029.svg" title="Event-driven agent" />
         </div>
       </section>
 
@@ -316,54 +342,43 @@ export default function Home() {
             <article className="result-card">
               <header>
                 <div><span>Simulation · Overall SR</span><h4>RoboTwin 2.0</h4></div>
-                <strong>93.6%</strong>
+                <strong>{`${robotwinMR0.value}%`}</strong>
               </header>
-              <VerticalBarChart label="RoboTwin 2.0 overall success-rate comparison, shown on an 80 to 95 percent scale" min={80} max={95} items={[
-                { label: "ABot-M0", value: 85.6 },
-                { label: "Fast-WAM", value: 91.8 },
-                { label: "InternVLA", value: 93.2 },
-                { label: "MR0", value: 93.6, highlight: true },
-              ]} />
-              <footer><b>+0.4</b> vs. InternVLA-A1.5 · scale 80–95%</footer>
+              <VerticalBarChart label={`RoboTwin 2.0 overall success-rate comparison, shown on an ${results.robotwin.min} to ${results.robotwin.max} percent scale`} min={results.robotwin.min} max={results.robotwin.max} ticks={[80, 90, 95]} items={results.robotwin.models} />
+              <footer><b>{`+${(robotwinMR0.value - robotwinComparison.value).toFixed(1)} pp`}</b>{` vs. InternVLA-A1.5 · scale ${results.robotwin.min}–${results.robotwin.max}%`}</footer>
             </article>
 
             <article className="result-card">
               <header>
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
-                <strong>19.68</strong>
+                <strong>{fixed(robodojoMR0.value)}</strong>
               </header>
-              <VerticalBarChart label="RoboDojo average Score comparison with selected baselines from Figure 1 and the updated MR0 result from Table 5; not a complete leaderboard" max={22} items={[
-                { label: "VLACT", value: 10.66 },
-                { label: "InternVLA-A1.5", value: 11.15 },
-                { label: "π0.5", value: 11.41 },
-                { label: "Spatial Forcing", value: 12.38 },
-                { label: "MR0", value: 19.68, highlight: true },
-              ]} />
-              <footer><b>Average SR 14.07%</b> · Baselines: Fig. 1 · MR0: Table 5 · scale 0–22</footer>
+              <VerticalBarChart label={`RoboDojo average Score comparison with selected baselines from ${results.robodojo.sources.baselines} and the updated MR0 result from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
+              <footer><b>{`Average SR ${results.robodojo.mr0SR}%`}</b><span>{`Selected baselines: ${results.robodojo.sources.baselines.replace("Figure ", "Fig. ")} · MR0: ${results.robodojo.sources.mr0} · scale ${results.robodojo.min}–${results.robodojo.max}`}</span></footer>
             </article>
 
             <article className="result-card">
               <header>
-                <div><span>Matched HG-DAgger · Average</span><h4>Real Robot</h4></div>
-                <strong className="metric-pair">0.78 / 0.91</strong>
+                <div><span>Matched {results.realRobot.protocol} · Average</span><h4>Real Robot</h4></div>
+                <MetricPair sr={results.realRobot.mr0.sr} ps={results.realRobot.mr0.ps} />
               </header>
-              <GroupedVerticalChart label="Average real-robot success rate and progress score under matched HG-DAgger post-training, shown on a 60 to 100 percent scale" min={0.6} max={1} series={["π0.5", "MR0"]} groups={[
-                { label: "Avg. SR", bars: [{ label: "π0.5", value: 0.69 }, { label: "MR0", value: 0.78, highlight: true }] },
-                { label: "Avg. PS", bars: [{ label: "π0.5", value: 0.85 }, { label: "MR0", value: 0.91, highlight: true }] },
+              <GroupedVerticalChart label="Average real-robot success rate and progress score under matched HG-DAgger post-training, shown on a 60 to 100 percent scale" min={results.realRobot.min} max={results.realRobot.max} series={[results.realRobot.baseline.label, results.realRobot.mr0.label]} groups={[
+                { label: "Avg. SR", bars: [{ label: results.realRobot.baseline.label, value: results.realRobot.baseline.sr }, { label: results.realRobot.mr0.label, value: results.realRobot.mr0.sr, highlight: true }] },
+                { label: "Avg. PS", bars: [{ label: results.realRobot.baseline.label, value: results.realRobot.baseline.ps }, { label: results.realRobot.mr0.label, value: results.realRobot.mr0.ps, highlight: true }] },
               ]} />
-              <footer><b>+0.09 SR / +0.06 PS</b> vs. π0.5 · scale 60–100%</footer>
+              <footer><b>{`${improvement(results.realRobot.mr0.sr, results.realRobot.baseline.sr)} SR / ${improvement(results.realRobot.mr0.ps, results.realRobot.baseline.ps)} PS`}</b>{` vs. ${results.realRobot.baseline.label} · scale ${results.realRobot.min * 100}–${results.realRobot.max * 100}%`}</footer>
             </article>
 
             <article className="result-card">
               <header>
-                <div><span>Ethernet insertion · Rollback</span><h4>CFG-DAgger</h4></div>
-                <strong className="metric-pair">0.70 / 0.90</strong>
+                <div><span>Ethernet insertion · {results.ethernetRollback.protocol}</span><h4>{results.ethernetRollback.mr0.label}</h4></div>
+                <MetricPair sr={results.ethernetRollback.mr0.sr} ps={results.ethernetRollback.mr0.ps} />
               </header>
-              <GroupedVerticalChart label="CFG-DAgger compared with RECAP on Ethernet insertion using the same demonstrations and Rollback episodes" max={1} series={["RECAP", "CFG-DAgger"]} groups={[
-                { label: "SR", bars: [{ label: "RECAP", value: 0.60, display: "0.60" }, { label: "CFG-DAgger", value: 0.70, display: "0.70", highlight: true }] },
-                { label: "PS", bars: [{ label: "RECAP", value: 0.67 }, { label: "CFG-DAgger", value: 0.90, display: "0.90", highlight: true }] },
+              <GroupedVerticalChart label="CFG-DAgger compared with RECAP on Ethernet insertion using the same demonstrations and Rollback episodes" min={results.ethernetRollback.min} max={results.ethernetRollback.max} series={[results.ethernetRollback.baseline.label, results.ethernetRollback.mr0.label]} groups={[
+                { label: "SR", bars: [{ label: results.ethernetRollback.baseline.label, value: results.ethernetRollback.baseline.sr, display: fixed(results.ethernetRollback.baseline.sr) }, { label: results.ethernetRollback.mr0.label, value: results.ethernetRollback.mr0.sr, display: fixed(results.ethernetRollback.mr0.sr), highlight: true }] },
+                { label: "PS", bars: [{ label: results.ethernetRollback.baseline.label, value: results.ethernetRollback.baseline.ps, display: fixed(results.ethernetRollback.baseline.ps) }, { label: results.ethernetRollback.mr0.label, value: results.ethernetRollback.mr0.ps, display: fixed(results.ethernetRollback.mr0.ps), highlight: true }] },
               ]} />
-              <footer><b>+0.10 SR / +0.23 PS</b> vs. RECAP · full Rollback set · scale 0–1</footer>
+              <footer><b>{`${improvement(results.ethernetRollback.mr0.sr, results.ethernetRollback.baseline.sr)} SR / ${improvement(results.ethernetRollback.mr0.ps, results.ethernetRollback.baseline.ps)} PS`}</b>{` vs. ${results.ethernetRollback.baseline.label} · full Rollback set · scale ${results.ethernetRollback.min}–${results.ethernetRollback.max}`}</footer>
             </article>
 
           </RevealOnView>
@@ -405,7 +420,8 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Letter-block Placement</h4>
-                <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>PS</dt><dd>0.96</dd></div></dl>
+                <p className="task-protocol">{results.demos.letterBlock.protocol}</p>
+                <dl><div><dt>SR</dt><dd>{fixed(results.demos.letterBlock.sr)}</dd></div><div><dt>PS</dt><dd>{fixed(results.demos.letterBlock.ps)}</dd></div></dl>
               </div>
             </article>
             <article className="task-card">
@@ -418,7 +434,8 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Garment Folding</h4>
-                <dl><div><dt>SR</dt><dd>0.83</dd></div><div><dt>PS</dt><dd>0.93</dd></div></dl>
+                <p className="task-protocol">{results.demos.garment.protocol}</p>
+                <dl><div><dt>SR</dt><dd>{fixed(results.demos.garment.sr)}</dd></div><div><dt>PS</dt><dd>{fixed(results.demos.garment.ps)}</dd></div></dl>
               </div>
             </article>
             <article className="task-card">
@@ -431,7 +448,8 @@ export default function Home() {
               </div>
               <div className="task-copy">
                 <h4>Ethernet Insertion</h4>
-                <dl><div><dt>SR</dt><dd>0.70</dd></div><div><dt>PS</dt><dd>0.90</dd></div></dl>
+                <p className="task-protocol">{results.demos.ethernet.protocol}</p>
+                <dl><div><dt>SR</dt><dd>{fixed(results.ethernetRollback.mr0.sr)}</dd></div><div><dt>PS</dt><dd>{fixed(results.ethernetRollback.mr0.ps)}</dd></div></dl>
               </div>
             </article>
           </div>

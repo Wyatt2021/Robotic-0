@@ -40,7 +40,7 @@ jobs:
       - name: Build and test
         run: |
           pnpm run build
-          node --test tests/rendered-html.test.mjs
+          node --test tests/rendered-html.test.mjs tests/project-results.test.mjs tests/figure-viewer.test.mjs
 
       - name: Export static GitHub Pages site
         run: |

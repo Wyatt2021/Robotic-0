@@ -83,7 +83,7 @@ html = html
   .replace("</head>", `${staticMetadata}</head>`)
   .replace(
     "</body>",
-    `<script src="${basePath}/github-pages.js" defer></script></body>`,
+    `<script src="${basePath}/github-pages.js" defer></script><script src="${basePath}/figure-viewer.js" defer></script></body>`,
   );
 
 if (/vinext\.navigationRuntime|type=["']module["']|rel=["']modulepreload["']/.test(html)) {

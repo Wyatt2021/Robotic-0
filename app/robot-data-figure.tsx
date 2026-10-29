@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type KeyboardEvent } from "react";
+import results from "../data/project-results.json";
 
 type DataSource = "inhouse" | "open-real" | "open-sim";
 
@@ -51,7 +52,7 @@ export default function RobotDataFigure() {
   return (
     <figure
       className="robot-data-figure"
-      aria-label="Composition of the 15,060-hour robot dataset"
+      aria-label={`Composition of the ${results.data.robotHours.toLocaleString("en-US")}-hour robot dataset`}
       data-active-source={activeSource ?? undefined}
       onPointerLeave={() => setHoveredSource(null)}
     >
@@ -102,7 +103,7 @@ export default function RobotDataFigure() {
             aria-label="50 percent licensed real, 21.5 percent RoboDesk, and 28.5 percent open simulation"
           >
             <div className="world-donut">
-              <div className="donut-center"><strong>15,060</strong><span>hours</span></div>
+              <div className="donut-center"><strong>{results.data.robotHours.toLocaleString("en-US")}</strong><span>hours</span></div>
             </div>
             <svg
               className="donut-hit-map"
