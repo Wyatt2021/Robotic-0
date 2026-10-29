@@ -20,10 +20,10 @@ test("keeps benchmark sources and post-training protocols separate", () => {
     ["ABot-M0", 85.6], ["Fast-WAM", 91.8], ["InternVLA-A1.5", 93.2], ["MR0", 93.6],
   ]);
   assert.deepEqual(results.robodojo.models.map(({ label, value }) => [label, value]), [
-    ["VLACT", 10.66], ["InternVLA-A1.5", 11.15], ["π0.5", 11.41], ["Spatial Forcing", 12.38], ["MR0", 14.95],
+    ["VLACT", 10.66], ["InternVLA-A1.5", 11.15], ["π0.5", 11.41], ["Spatial Forcing", 12.38], ["MR0", 19.68],
   ]);
   assert.equal(Object.hasOwn(results.robodojo, "mr0SR"), false, "Do not mix the Figure 1 Score with a different experiment's SR");
-  assert.deepEqual(results.robodojo.sources, { baselines: "Figure 1", mr0: "Figure 1" });
+  assert.deepEqual(results.robodojo.sources, { baselines: "Figure 1", mr0: "Table 5" });
   assert.equal(results.robodojo.min, 0);
   assert.equal(results.robodojo.max, 20);
   assert.equal(results.robodojo.selectedBaselines, true);
@@ -45,9 +45,9 @@ test("generates all three overview charts from the shared result data", () => {
   assert.match(generated, /id="real-robot-comparison"/);
   assert.match(generated, /id="robotwin-comparison"/);
   assert.match(generated, /id="robodojo-comparison"/);
-  assert.match(generated, /Fig\. 1 · selected methods/);
+  assert.match(generated, /Fig\. 1 baselines · MR0: Table 5/);
   assert.match(generated, /Matched HG-DAgger/);
-  assert.doesNotMatch(generated, /SimpleMem|KinRT|Hy-Embodied|19\.68|14\.07|9\.53|Table 5/);
+  assert.doesNotMatch(generated, /SimpleMem|KinRT|Hy-Embodied|14\.95|14\.07|9\.53/);
 
   const bars = [...generated.matchAll(/<rect data-model="([^"]+)" data-(sr|ps|score)="([^"]+)"[^>]*y="([^"]+)"[^>]*height="([^"]+)"[^>]*fill="([^"]+)"/g)];
   assert.equal(bars.length, 13);
@@ -72,7 +72,7 @@ test("updating results changes chart text and geometry, not the surrounding artw
   assert.equal(after.suffix, before.suffix);
   assert.match(after.generated, /data-model="MR0" data-score="19\.5"[^>]*y="925\.125"[^>]*height="82\.875"/);
   assert.match(after.generated, />19\.50<\/text>/);
-  assert.doesNotMatch(after.generated, /14\.95/);
+  assert.doesNotMatch(after.generated, /19\.68/);
 });
 
 test("rejects missing chart boundaries and invalid or mismatched results", () => {

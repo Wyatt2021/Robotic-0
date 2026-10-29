@@ -71,17 +71,22 @@ function GroupedVerticalChart({
   max,
   series,
   label,
+  ticks,
 }: {
   groups: VerticalGroup[];
   min?: number;
   max: number;
   series: [string, string];
   label: string;
+  ticks?: number[];
 }) {
   return (
     <div className="grouped-vertical-chart" role="group" aria-label={label}>
       <div className="vertical-legend"><span>{series[0]}</span><span>{series[1]}</span></div>
-      <div className="vertical-groups">
+      <div className={`vertical-groups${ticks ? " has-group-scale" : ""}`}>
+        {ticks && <div className="group-scale" aria-hidden="true">
+          {ticks.map((tick) => <span key={tick} style={{ bottom: `${(tick - min) / (max - min) * 100}%` }}>{tick.toFixed(1)}</span>)}
+        </div>}
         {groups.map((group, groupIndex) => (
           <div className="vertical-group" key={group.label}>
             <div className="group-bars">
@@ -146,21 +151,21 @@ export default function Home() {
           tabIndex={0}
         >
           <img
-            src="/assets/main-overview-20260902.svg?v=20261029-robodojo-fig1"
+            src="/assets/main-overview-20260902.svg?v=20261029-table5-axis"
             alt="Overview of the data, training, model, agent, and real-world capabilities of Meituan-Robotics-0"
             width={1763}
             height={1170}
             loading="lazy"
           />
         </figure>
-        <FigureViewer src="/assets/main-overview-20260902.svg?v=20261029-robodojo-fig1" title="System overview" />
+        <FigureViewer src="/assets/main-overview-20260902.svg?v=20261029-table5-axis" title="System overview" />
         <div className="overview-copy">
           <p>
             Meituan-Robotics-0 (MR0) is a vision-language-action foundation model
             and embodied-agent system for stationary-base desktop manipulation.
             It combines {results.data.visionLanguageSamples / 1_000_000} million vision-language samples with {number(results.data.robotHours)} hours of
             robot trajectories, then transfers these priors to continuous control
-            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0 and an average Score of ${robodojoMR0.value} on RoboDojo, as reported in Figure 1. `}
+            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0. It achieves an average Score of ${robodojoMR0.value} on RoboDojo, as reported in Table 5. `}
             Real-world post-training uses demonstrations and human corrections;
             Rollback pairs replaced policy segments with corrective continuations
             for CFG-DAgger. The event-driven agent adds persistent task memory and
@@ -332,8 +337,8 @@ export default function Home() {
             <p>
               We evaluate MR0 on RoboTwin 2.0, RoboDojo, and three real-robot
               tasks: letter-block placement, garment folding, and Ethernet
-              insertion. The RoboDojo comparison follows the selected methods and
-              average Scores reported in Figure 1.
+              insertion. The RoboDojo comparison retains the selected baselines
+              from Figure 1 and uses the MR0 average Score from Table 5.
             </p>
           </div>
           <RevealOnView className="result-card-grid">
@@ -350,7 +355,7 @@ export default function Home() {
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
                 <strong>{fixed(robodojoMR0.value)}</strong>
               </header>
-              <VerticalBarChart label={`RoboDojo average Score comparison with selected methods from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
+              <VerticalBarChart label={`RoboDojo average Score comparison with selected baselines from ${results.robodojo.sources.baselines} and MR0 from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
             </article>
 
             <article className="result-card">
@@ -358,7 +363,7 @@ export default function Home() {
                 <div><span>Matched {results.realRobot.protocol} · Average</span><h4>Real Robot</h4></div>
                 <MetricPair sr={results.realRobot.mr0.sr} ps={results.realRobot.mr0.ps} />
               </header>
-              <GroupedVerticalChart label="Average real-robot success rate and progress score under matched HG-DAgger post-training, shown on a 60 to 100 percent scale" min={results.realRobot.min} max={results.realRobot.max} series={[results.realRobot.baseline.label, results.realRobot.mr0.label]} groups={[
+              <GroupedVerticalChart label="Average real-robot success rate and progress score under matched HG-DAgger post-training, shown on a 60 to 100 percent scale" min={results.realRobot.min} max={results.realRobot.max} ticks={[0.6, 0.8, 1]} series={[results.realRobot.baseline.label, results.realRobot.mr0.label]} groups={[
                 { label: "Avg. SR", bars: [{ label: results.realRobot.baseline.label, value: results.realRobot.baseline.sr }, { label: results.realRobot.mr0.label, value: results.realRobot.mr0.sr, highlight: true }] },
                 { label: "Avg. PS", bars: [{ label: results.realRobot.baseline.label, value: results.realRobot.baseline.ps }, { label: results.realRobot.mr0.label, value: results.realRobot.mr0.ps, highlight: true }] },
               ]} />

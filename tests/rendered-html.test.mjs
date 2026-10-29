@@ -24,15 +24,15 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   const html = await response.text();
   const readableHtml = html.replace(/<!--[\s\S]*?-->/g, "");
   assert.match(readableHtml, /reaches 93\.6% success/);
-  assert.match(readableHtml, /an average Score of 14\.95 on RoboDojo, as reported in Figure 1\./);
-  assert.match(readableHtml, /Figure 1\. Real-world/);
+  assert.match(readableHtml, /an average Score of 19\.68 on RoboDojo, as reported in Table 5\./);
+  assert.match(readableHtml, /Table 5\. Real-world/);
   assert.equal((html.match(/data-figure-zoom="true"|data-figure-zoom=""/g) ?? []).length, 3);
   assert.match(html, /aria-label="View System overview at full size"/);
   assert.match(html, /aria-label="View Vision-language data at full size"/);
   assert.match(html, /aria-label="View Event-driven agent at full size"/);
   assert.match(html, /<title>Meituan-Robotics-0<\/title>/i);
   assert.doesNotMatch(html, /LongCat Robotics Team/i);
-  assert.match(html, /main-overview-20260902\.svg\?v=20261029-robodojo-fig1/);
+  assert.match(html, /main-overview-20260902\.svg\?v=20261029-table5-axis/);
   assert.doesNotMatch(html, /system-overview|Rollback and CFG-DAgger/);
   assert.match(html, />Overview</);
   assert.match(html, />Data</);
@@ -53,10 +53,10 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
   assert.match(html, /training-timeline/);
   assert.doesNotMatch(html, /method-facts|stage-grid/);
-  assert.match(html, /<strong>14\.95<\/strong><span>RoboDojo avg\. Score<\/span>/);
+  assert.match(html, /<strong>19\.68<\/strong><span>RoboDojo avg\. Score<\/span>/);
   assert.match(html, /RoboTwin 2\.0/);
   assert.match(html, /RoboDojo/);
-  assert.match(html, /14\.95/);
+  assert.match(html, /19\.68/);
   assert.match(html, /Real Robot/);
   assert.match(html, /RECAP/);
   assert.doesNotMatch(html, /real-robot-results\.png|robotwin-results\.png/);
@@ -80,6 +80,9 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /\+0\.09 SR \/ \+0\.06 PS/);
   assert.match(html, /vertical-chart/);
   assert.match(html, /grouped-vertical-chart/);
+  assert.match(html, /class="group-scale"/);
+  assert.match(html, /bottom:0%">0\.6/);
+  assert.match(html, /bottom:100%">1\.0/);
   assert.doesNotMatch(html, /Agent trace metrics|≈2 Hz|10 events|6 events/);
   assert.doesNotMatch(html, /\+0\.4 pp/);
   assert.match(html, /vertical-scale/);
@@ -130,7 +133,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 
   // Keep the original page structure while auditing corrected paper results.
-  assert.doesNotMatch(html, /19\.68|14\.07|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
+  assert.doesNotMatch(html, /14\.95|14\.07|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
   assert.doesNotMatch(html, /without benchmark-specific enhancements|outcome-labeled autonomous rollouts/);
   const resultCards = [...html.matchAll(/<article class="result-card">([\s\S]*?)<\/article>/g)].map((match) => match[1]);
   assert.equal(resultCards.length, 4);
@@ -141,17 +144,17 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   }
   const roboDojoCard = resultCards.find((card) => /<h4>RoboDojo<\/h4>/.test(card));
   assert.ok(roboDojoCard, "Missing RoboDojo model-comparison card");
-  for (const value of ["VLACT", "10.66", "InternVLA-A1.5", "11.15", "π0.5", "11.41", "Spatial Forcing", "12.38", "MR0", "14.95"]) {
+  for (const value of ["VLACT", "10.66", "InternVLA-A1.5", "11.15", "π0.5", "11.41", "Spatial Forcing", "12.38", "MR0", "19.68"]) {
     assert.ok(roboDojoCard.includes(value), `Missing selected RoboDojo model or Score ${value}`);
   }
   assert.doesNotMatch(roboDojoCard, /Selected methods · scale/);
-  assert.match(roboDojoCard, /RoboDojo average Score comparison with selected methods from Figure 1; not a complete leaderboard/);
+  assert.match(roboDojoCard, /RoboDojo average Score comparison with selected baselines from Figure 1 and MR0 from Table 5; not a complete leaderboard/);
   assert.equal((roboDojoCard.match(/class="vertical-column/g) ?? []).length, 5);
   assert.doesNotMatch(roboDojoCard, /scale 0–20/);
   assert.match(roboDojoCard, /vertical-column highlight/);
   assert.doesNotMatch(roboDojoCard, /General\.|Precision|Long-Horizon|Memory|Open|Xiaomi|Galaxea|DM0\.5|Rex-M1|Simate|SimpleMem|KinRT|Hy-Embodied/);
-  assert.doesNotMatch(roboDojoCard, /Average SR|Table 5/);
-  assert.match(html, /The RoboDojo comparison follows the selected methods and average Scores reported in Figure 1\./);
+  assert.doesNotMatch(roboDojoCard, /Average SR/);
+  assert.match(html, /The RoboDojo comparison retains the selected baselines from Figure 1 and uses the MR0 average Score from Table 5\./);
   assert.doesNotMatch(html, /initial-scene reference and latent-action history|without the embodied-agent system|using compact historical context/);
   assert.match(html, /CFG-DAgger compared with RECAP on Ethernet insertion using the same demonstrations and Rollback episodes/);
   assert.match(html, /RECAP: 0\.60/);
@@ -285,7 +288,7 @@ test("keeps the original figure slots with localized paper corrections", async (
   }
 });
 
-test("matches every overview RoboDojo score to Figure 1", async () => {
+test("matches overview RoboDojo baselines to Figure 1 and MR0 to Table 5", async () => {
   const overview = await readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8");
   const chart = overview.slice(overview.indexOf('<g id="robodojo-comparison"'));
   const bars = [...chart.matchAll(/<rect data-model="([^"]+)" data-score="([^"]+)"[^>]*y="([^"]+)"[^>]*height="([^"]+)"[^>]*fill="([^"]+)"/g)];
@@ -294,15 +297,15 @@ test("matches every overview RoboDojo score to Figure 1", async () => {
     ["InternVLA-A1.5", 11.15],
     ["π0.5", 11.41],
     ["Spatial Forcing", 12.38],
-    ["MR0", 14.95],
+    ["MR0", 19.68],
   ]);
   for (const [, model, score, y, height, fill] of bars) {
     assert.ok(Math.abs(Number(height) - Number(score) / 20 * 85) < 0.001);
     assert.ok(Math.abs(Number(y) + Number(height) - 1008) < 0.001);
     assert.equal(fill, model === "MR0" ? "#ffbd00" : "#969696");
   }
-  assert.match(chart, /Fig\. 1 · selected methods/);
-  assert.doesNotMatch(chart, /SimpleMem|KinRT|Hy-Embodied|19\.68|14\.07|9\.53|Table 5/);
+  assert.match(chart, /Fig\. 1 baselines · MR0: Table 5/);
+  assert.doesNotMatch(chart, /SimpleMem|KinRT|Hy-Embodied|14\.95|14\.07|9\.53/);
 });
 
 test("ships the exact revised technical report supplied for the October 29 update", async () => {

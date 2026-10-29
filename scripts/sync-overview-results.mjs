@@ -99,7 +99,7 @@ ${twin.models.map((model, index) => bar({ ...model, x: 1208 + index * 42, width:
     <g text-anchor="middle">${twin.models.map((model, index) => modelLabel(model.label, 1217.5 + index * 42)).join("")}</g>
     <text x="1279" y="1034" text-anchor="middle">Overall SR (%) · scale ${twin.min}–${twin.max}</text>
   </g>
-  <!-- RoboDojo selected-method comparison from ${escapeXml(dojo.sources.mr0)}. -->
+  <!-- RoboDojo baselines from ${escapeXml(dojo.sources.baselines)}; MR0 from ${escapeXml(dojo.sources.mr0)}. -->
   <rect x="1370" y="909" width="204" height="128" fill="#fff"/>
   <g id="robodojo-comparison" font-size="6" fill="#555">
     <path d="M1390 923V1008H1570" stroke="#bfbfbf" stroke-width=".6" fill="none"/>
@@ -108,7 +108,7 @@ ${twin.models.map((model, index) => bar({ ...model, x: 1208 + index * 42, width:
 ${dojo.models.map((model, index) => bar({ ...model, x: 1399 + index * 36, width: 18, max: 20 })).join("\n")}
     <g text-anchor="middle" font-size="7" fill="#333">${dojo.models.map((model, index) => `<text x="${1408 + index * 36}" y="${n(plotBottom - model.value / 20 * plotHeight - 3.5, 1)}">${model.value.toFixed(2)}</text>`).join("")}</g>
     <g text-anchor="middle" font-size="5.8">${dojo.models.map((model, index) => modelLabel(model.label, 1408 + index * 36)).join("")}</g>
-    <text x="1480" y="1034" text-anchor="middle">${sourceLabel(dojo.sources.mr0)} · selected methods</text>
+    <text x="1480" y="1034" text-anchor="middle">${sourceLabel(dojo.sources.baselines)} baselines · MR0: ${sourceLabel(dojo.sources.mr0)}</text>
   </g>
 ${endMarker}`;
 }

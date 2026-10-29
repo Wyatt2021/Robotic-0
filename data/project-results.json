@@ -22,7 +22,7 @@
     ]
   },
   "robodojo": {
-    "sources": { "baselines": "Figure 1", "mr0": "Figure 1" },
+    "sources": { "baselines": "Figure 1", "mr0": "Table 5" },
     "metric": "Average Score",
     "min": 0,
     "max": 20,
@@ -32,7 +32,7 @@
       { "label": "InternVLA-A1.5", "value": 11.15 },
       { "label": "π0.5", "value": 11.41 },
       { "label": "Spatial Forcing", "value": 12.38 },
-      { "label": "MR0", "value": 14.95, "highlight": true }
+      { "label": "MR0", "value": 19.68, "highlight": true }
     ]
   },
   "realRobot": {
