@@ -165,7 +165,7 @@ export default function Home() {
             and embodied-agent system for stationary-base desktop manipulation.
             It combines {results.data.visionLanguageSamples / 1_000_000} million vision-language samples with {number(results.data.robotHours)} hours of
             robot trajectories, then transfers these priors to continuous control
-            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0. It achieves an average Score of ${robodojoMR0.value} on RoboDojo, as reported in Table 5. `}
+            through a three-stage training recipe. {`The standalone policy reaches ${robotwinMR0.value}% success on RoboTwin 2.0. It achieves an average success rate of ${fixed(robodojoMR0.value)}% on RoboDojo, as reported in Table 5. `}
             Real-world post-training uses demonstrations and human corrections;
             Rollback pairs replaced policy segments with corrective continuations
             for CFG-DAgger. The event-driven agent adds persistent task memory and
@@ -176,7 +176,7 @@ export default function Home() {
           <div><strong>{`${results.data.visionLanguageSamples / 1_000_000}M`}</strong><span>vision-language samples</span></div>
           <div><strong>{`${number(results.data.robotHours)}h`}</strong><span>robot trajectory data</span></div>
           <div><strong>{`${robotwinMR0.value}%`}</strong><span>RoboTwin 2.0 overall SR</span></div>
-          <div><strong>{fixed(robodojoMR0.value)}</strong><span>RoboDojo avg. Score</span></div>
+          <div><strong>{`${fixed(robodojoMR0.value)}%`}</strong><span>RoboDojo avg. SR</span></div>
         </div>
       </section>
 
@@ -338,7 +338,7 @@ export default function Home() {
               We evaluate MR0 on RoboTwin 2.0, RoboDojo, and three real-robot
               tasks: letter-block placement, garment folding, and Ethernet
               insertion. The RoboDojo comparison retains the selected baselines
-              from Figure 1 and uses the MR0 average Score from Table 5.
+              from Figure 1 and uses average success rates from Table 5.
             </p>
           </div>
           <RevealOnView className="result-card-grid">
@@ -352,10 +352,10 @@ export default function Home() {
 
             <article className="result-card">
               <header>
-                <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
-                <strong>{fixed(robodojoMR0.value)}</strong>
+                <div><span>Simulation · Average SR (%)</span><h4>RoboDojo</h4></div>
+                <strong>{`${fixed(robodojoMR0.value)}%`}</strong>
               </header>
-              <VerticalBarChart label={`RoboDojo average Score comparison with selected baselines from ${results.robodojo.sources.baselines} and MR0 from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} ticks={[0, 20, 40]} items={results.robodojo.models.map((model) => ({ ...model, display: fixed(model.value) }))} />
+              <VerticalBarChart label="RoboDojo average success rate (%) comparison from Table 5, retaining the selected methods from Figure 1; not a complete leaderboard" min={results.robodojo.min} max={results.robodojo.max} ticks={[0, 15, 30]} items={results.robodojo.models.map((model) => ({ ...model, display: fixed(model.value) }))} />
             </article>
 
             <article className="result-card">

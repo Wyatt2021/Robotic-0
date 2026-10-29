@@ -22,19 +22,20 @@
     ]
   },
   "robodojo": {
-    "sources": { "baselines": "Figure 1", "mr0": "Table 5" },
-    "metric": "Average Score",
+    "sources": { "baselines": "Table 5", "mr0": "Table 5" },
+    "metric": "Average Success Rate",
+    "unit": "%",
     "min": 0,
-    "max": 40,
+    "max": 30,
     "selectedBaselines": true,
     "models": [
-      { "label": "Hy-Embodied-0.5-VLA", "value": 13.07 },
-      { "label": "MR0", "value": 19.68, "highlight": true },
-      { "label": "Xiaomi-Robotics-1", "value": 20.07 },
-      { "label": "GalaxeaVLA (G0.5)", "value": 20.23 },
-      { "label": "DM0.5", "value": 24.90 },
-      { "label": "Rex-M1 Preview", "value": 33.79 },
-      { "label": "Simate-beta", "value": 33.95 }
+      { "label": "Hy-Embodied-0.5-VLA", "value": 8.80 },
+      { "label": "MR0", "value": 14.07, "highlight": true },
+      { "label": "Xiaomi-Robotics-1", "value": 13.93 },
+      { "label": "GalaxeaVLA (G0.5)", "value": 14.88 },
+      { "label": "DM0.5", "value": 19.34 },
+      { "label": "Rex-M1 Preview", "value": 27.44 },
+      { "label": "Simate-beta", "value": 27.96 }
     ]
   },
   "realRobot": {

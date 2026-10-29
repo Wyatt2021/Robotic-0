@@ -22,13 +22,13 @@ test("keeps benchmark sources and post-training protocols separate", () => {
     ["ABot-M0", 85.6], ["Fast-WAM", 91.8], ["InternVLA-A1.5", 93.2], ["MR0", 93.6],
   ]);
   assert.deepEqual(results.robodojo.models.map(({ label, value }) => [label, value]), [
-    ["Hy-Embodied-0.5-VLA", 13.07], ["MR0", 19.68], ["Xiaomi-Robotics-1", 20.07],
-    ["GalaxeaVLA (G0.5)", 20.23], ["DM0.5", 24.90], ["Rex-M1 Preview", 33.79], ["Simate-beta", 33.95],
+    ["Hy-Embodied-0.5-VLA", 8.80], ["MR0", 14.07], ["Xiaomi-Robotics-1", 13.93],
+    ["GalaxeaVLA (G0.5)", 14.88], ["DM0.5", 19.34], ["Rex-M1 Preview", 27.44], ["Simate-beta", 27.96],
   ]);
-  assert.equal(Object.hasOwn(results.robodojo, "mr0SR"), false, "Do not mix the Figure 1 Score with a different experiment's SR");
-  assert.deepEqual(results.robodojo.sources, { baselines: "Figure 1", mr0: "Table 5" });
+  assert.equal(Object.hasOwn(results.robodojo, "mr0SR"), false, "Average SR is stored in the chart values");
+  assert.deepEqual(results.robodojo.sources, { baselines: "Table 5", mr0: "Table 5" });
   assert.equal(results.robodojo.min, 0);
-  assert.equal(results.robodojo.max, 40);
+  assert.equal(results.robodojo.max, 30);
   assert.equal(results.robodojo.selectedBaselines, true);
   assert.equal(results.realRobot.protocol, "HG-DAgger");
   assert.deepEqual(results.realRobot.baseline, { label: "π0.5", sr: 0.69, ps: 0.85 });

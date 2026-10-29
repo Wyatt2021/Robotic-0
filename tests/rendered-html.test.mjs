@@ -24,7 +24,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   const html = await response.text();
   const readableHtml = html.replace(/<!--[\s\S]*?-->/g, "");
   assert.match(readableHtml, /reaches 93\.6% success/);
-  assert.match(readableHtml, /an average Score of 19\.68 on RoboDojo, as reported in Table 5\./);
+  assert.match(readableHtml, /an average success rate of 14\.07% on RoboDojo, as reported in Table 5\./);
   assert.match(readableHtml, /Table 5\. Real-world/);
   assert.equal((html.match(/data-figure-zoom="true"|data-figure-zoom=""/g) ?? []).length, 3);
   assert.match(html, /aria-label="View System overview at full size"/);
@@ -53,10 +53,10 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /Unified Action Representation|Model Architecture|action-flow/);
   assert.match(html, /training-timeline/);
   assert.doesNotMatch(html, /method-facts|stage-grid/);
-  assert.match(html, /<strong>19\.68<\/strong><span>RoboDojo avg\. Score<\/span>/);
+  assert.match(html, /<strong>14\.07%<\/strong><span>RoboDojo avg\. SR<\/span>/);
   assert.match(html, /RoboTwin 2\.0/);
   assert.match(html, /RoboDojo/);
-  assert.match(html, /19\.68/);
+  assert.match(html, /14\.07/);
   assert.match(html, /Real Robot/);
   assert.match(html, /RECAP/);
   assert.doesNotMatch(html, /real-robot-results\.png|robotwin-results\.png/);
@@ -133,7 +133,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 
   // Keep the original page structure while auditing corrected paper results.
-  assert.doesNotMatch(html, /14\.95|14\.07|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
+  assert.doesNotMatch(html, /14\.95|9\.53|0\.94|ranks? fourth|first place|SOTA Performance/i);
   assert.doesNotMatch(html, /without benchmark-specific enhancements|outcome-labeled autonomous rollouts/);
   const resultCards = [...html.matchAll(/<article class="result-card">([\s\S]*?)<\/article>/g)].map((match) => match[1]);
   assert.equal(resultCards.length, 4);
@@ -144,17 +144,18 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   }
   const roboDojoCard = resultCards.find((card) => /<h4>RoboDojo<\/h4>/.test(card));
   assert.ok(roboDojoCard, "Missing RoboDojo model-comparison card");
-  for (const value of ["Hy-Embodied-0.5-VLA", "13.07", "MR0", "19.68", "Xiaomi-Robotics-1", "20.07", "GalaxeaVLA (G0.5)", "20.23", "DM0.5", "24.90", "Rex-M1 Preview", "33.79", "Simate-beta", "33.95"]) {
+  for (const value of ["Hy-Embodied-0.5-VLA", "8.80", "MR0", "14.07", "Xiaomi-Robotics-1", "13.93", "GalaxeaVLA (G0.5)", "14.88", "DM0.5", "19.34", "Rex-M1 Preview", "27.44", "Simate-beta", "27.96"]) {
     assert.ok(roboDojoCard.includes(value), `Missing selected RoboDojo model or Score ${value}`);
   }
   assert.doesNotMatch(roboDojoCard, /Selected methods · scale/);
-  assert.match(roboDojoCard, /RoboDojo average Score comparison with selected baselines from Figure 1 and MR0 from Table 5; not a complete leaderboard/);
+  assert.match(roboDojoCard, /RoboDojo average success rate \(%\) comparison from Table 5, retaining the selected methods from Figure 1; not a complete leaderboard/);
   assert.equal((roboDojoCard.match(/class="vertical-column/g) ?? []).length, 7);
   assert.doesNotMatch(roboDojoCard, /scale 0–20/);
   assert.match(roboDojoCard, /vertical-column highlight/);
   assert.doesNotMatch(roboDojoCard, /VLACT|InternVLA|Spatial Forcing|SimpleMem|KinRT/);
-  assert.doesNotMatch(roboDojoCard, /Average SR/);
-  assert.match(html, /The RoboDojo comparison retains the selected baselines from Figure 1 and uses the MR0 average Score from Table 5\./);
+  assert.match(roboDojoCard, /Average SR \(%\)/);
+  assert.doesNotMatch(roboDojoCard, /Average Score|19\.68/);
+  assert.match(html, /The RoboDojo comparison retains the selected baselines from Figure 1 and uses average success rates from Table 5\./);
   assert.doesNotMatch(html, /initial-scene reference and latent-action history|without the embodied-agent system|using compact historical context/);
   assert.match(html, /CFG-DAgger compared with RECAP on Ethernet insertion using the same demonstrations and Rollback episodes/);
   assert.match(html, /RECAP: 0\.60/);
