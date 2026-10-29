@@ -26,11 +26,14 @@ test("exports a self-contained GitHub Pages project site", async () => {
   assert.equal(resultCards.length, 4);
   for (const card of resultCards) assert.doesNotMatch(card, /<footer\b/);
   assert.doesNotMatch(html, /Selected methods · scale|\+0\.4 pp|\+0\.09 SR \/ \+0\.06 PS|\+0\.10 SR \/ \+0\.23 PS/);
-  assert.match(html, /VLACT/);
+  assert.match(html, /Hy-Embodied-0\.5-VLA/);
   assert.match(html, /InternVLA-A1\.5/);
   assert.match(html, /π0\.5/);
-  assert.match(html, /Spatial Forcing/);
-  assert.doesNotMatch(html, /SimpleMemVLA|KinRT|Hy-Embodied/);
+  assert.match(html, /Xiaomi-Robotics-1/);
+  assert.match(html, /GalaxeaVLA \(G0\.5\)/);
+  assert.match(html, /Rex-M1 Preview/);
+  assert.match(html, /Simate-beta/);
+  assert.doesNotMatch(html, /SimpleMemVLA|KinRT|VLACT|Spatial Forcing/);
   assert.match(html, /<script src="\/Robotic-0\/github-pages\.js" defer><\/script>/);
   assert.match(html, /<script src="\/Robotic-0\/figure-viewer\.js" defer><\/script>/);
   assert.match(

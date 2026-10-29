@@ -9,10 +9,12 @@ import {
   validateResults,
 } from "../scripts/sync-overview-results.mjs";
 
-const results = JSON.parse(await readFile(new URL("../data/project-results.json", import.meta.url), "utf8"));
+const results = JSON.parse(await readFile(new URL("../data/archived-overview-results.json", import.meta.url), "utf8"));
+const currentResults = JSON.parse(await readFile(new URL("../data/project-results.json", import.meta.url), "utf8"));
 const overview = await readFile(new URL("../public/assets/main-overview-20260902.svg", import.meta.url), "utf8");
 
 test("keeps benchmark sources and post-training protocols separate", () => {
+  const results = currentResults;
   validateResults(results);
   assert.equal(results.paper.version, "2026-10-29");
   assert.deepEqual(results.data, { visionLanguageSamples: 147000000, robotHours: 15060 });
@@ -20,12 +22,13 @@ test("keeps benchmark sources and post-training protocols separate", () => {
     ["ABot-M0", 85.6], ["Fast-WAM", 91.8], ["InternVLA-A1.5", 93.2], ["MR0", 93.6],
   ]);
   assert.deepEqual(results.robodojo.models.map(({ label, value }) => [label, value]), [
-    ["VLACT", 10.66], ["InternVLA-A1.5", 11.15], ["π0.5", 11.41], ["Spatial Forcing", 12.38], ["MR0", 19.68],
+    ["Hy-Embodied-0.5-VLA", 13.07], ["MR0", 19.68], ["Xiaomi-Robotics-1", 20.07],
+    ["GalaxeaVLA (G0.5)", 20.23], ["DM0.5", 24.90], ["Rex-M1 Preview", 33.79], ["Simate-beta", 33.95],
   ]);
   assert.equal(Object.hasOwn(results.robodojo, "mr0SR"), false, "Do not mix the Figure 1 Score with a different experiment's SR");
   assert.deepEqual(results.robodojo.sources, { baselines: "Figure 1", mr0: "Table 5" });
   assert.equal(results.robodojo.min, 0);
-  assert.equal(results.robodojo.max, 20);
+  assert.equal(results.robodojo.max, 40);
   assert.equal(results.robodojo.selectedBaselines, true);
   assert.equal(results.realRobot.protocol, "HG-DAgger");
   assert.deepEqual(results.realRobot.baseline, { label: "π0.5", sr: 0.69, ps: 0.85 });

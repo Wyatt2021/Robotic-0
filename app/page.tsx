@@ -50,7 +50,7 @@ function VerticalBarChart({
   ticks?: number[];
 }) {
   return (
-    <div className={`vertical-chart${ticks ? " has-scale" : ""}`} role="group" aria-label={label}>
+    <div className={`vertical-chart${ticks ? " has-scale" : ""}${items.length > 5 ? " dense-chart" : ""}`} role="group" aria-label={label}>
       {ticks && <div className="vertical-scale" aria-hidden="true">
         {ticks.map((tick) => <span key={tick} style={{ bottom: `${(tick - min) / (max - min) * 100}%` }}><i>{tick}</i></span>)}
       </div>}
@@ -355,7 +355,7 @@ export default function Home() {
                 <div><span>Simulation · Average Score</span><h4>RoboDojo</h4></div>
                 <strong>{fixed(robodojoMR0.value)}</strong>
               </header>
-              <VerticalBarChart label={`RoboDojo average Score comparison with selected baselines from ${results.robodojo.sources.baselines} and MR0 from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} items={results.robodojo.models} />
+              <VerticalBarChart label={`RoboDojo average Score comparison with selected baselines from ${results.robodojo.sources.baselines} and MR0 from ${results.robodojo.sources.mr0}; not a complete leaderboard`} min={results.robodojo.min} max={results.robodojo.max} ticks={[0, 20, 40]} items={results.robodojo.models.map((model) => ({ ...model, display: fixed(model.value) }))} />
             </article>
 
             <article className="result-card">

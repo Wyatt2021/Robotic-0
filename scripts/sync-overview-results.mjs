@@ -1,7 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const dataUrl = new URL("../data/project-results.json", import.meta.url);
+// The September artwork is archived; the live Overview is now a direct PPT export.
+const dataUrl = new URL("../data/archived-overview-results.json", import.meta.url);
 const overviewUrl = new URL("../public/assets/main-overview-20260902.svg", import.meta.url);
 export const startMarker = "  <!-- BEGIN GENERATED EVALUATION: data/project-results.json -->";
 export const endMarker = "  <!-- END GENERATED EVALUATION -->";
@@ -23,9 +24,9 @@ function assertNumber(value, min, max, name) {
 }
 
 export function validateResults(results) {
-  for (const [key, count] of [["robotwin", 4], ["robodojo", 5]]) {
+  for (const [key, count] of [["robotwin", 4], ["robodojo", results.robodojo?.models?.length]]) {
     const chart = results[key];
-    if (!chart || chart.models?.length !== count) throw new Error(`Expected ${count} ${key} entries`);
+    if (!chart || !count || count < 2 || chart.models?.length !== count) throw new Error(`Expected ${count} ${key} entries`);
     if (chart.models.filter((model) => model.highlight).length !== 1) throw new Error(`Expected one highlighted ${key} entry`);
     if (new Set(chart.models.map((model) => model.label)).size !== count) throw new Error(`Duplicate ${key} labels`);
     for (const model of chart.models) {
@@ -33,8 +34,6 @@ export function validateResults(results) {
       assertNumber(model.value, chart.min, chart.max, `${key} ${model.label}`);
     }
   }
-  // The compact overview retains its original 0–20 Score axis.
-  for (const model of results.robodojo.models) assertNumber(model.value, 0, 20, `overview RoboDojo ${model.label}`);
   for (const key of ["realRobot", "ethernetRollback"]) {
     for (const method of ["baseline", "mr0"]) {
       for (const metric of ["sr", "ps"]) assertNumber(results[key][method][metric], 0, 1, `${key} ${method} ${metric}`);
@@ -141,7 +140,7 @@ async function main() {
   const [json, svg] = await Promise.all([readFile(dataUrl, "utf8"), readFile(overviewUrl, "utf8")]);
   const updated = synchronizeOverview(svg, JSON.parse(json));
   if (updated === svg) {
-    console.log("Overview charts match data/project-results.json.");
+    console.log("Archived overview charts match data/archived-overview-results.json.");
     return;
   }
   if (args[0] !== "--write") throw new Error("Overview results are out of sync. Run node scripts/sync-overview-results.mjs --write and review the SVG diff.");
