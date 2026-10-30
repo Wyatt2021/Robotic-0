@@ -199,21 +199,21 @@ export default function Home() {
               {results.data.visionLanguageSamples / 1_000_000} million samples provide both general visual understanding and
               embodied grounding. General data accounts for 78% of the mixture,
               while embodied data contributes the remaining 22%. The embodied
-              portion emphasizes robot-centric scenes, spatial relationships, and
-              manipulation progress without discarding the backbone&apos;s broader
-              visual-language capability.
+              portion covers visual grounding, affordance grounding, scene
+              captioning, and task planning. The general portion covers visual
+              grounding and counting, general VQA, and spatial understanding.
             </p>
           </div>
           <figure className="paper-figure wide-figure">
             <img
-              src="/assets/vision-language-data.svg"
+              src="/assets/vision-language-data-20261030.svg?v=20261030-ppt"
               alt="Composition and examples of the vision-language dataset"
-              width={2712}
-              height={1206}
+              width={2802}
+              height={1208}
               loading="lazy"
             />
           </figure>
-          <FigureViewer src="/assets/vision-language-data.svg" title="Vision-language data" />
+          <FigureViewer src="/assets/vision-language-data-20261030.svg?v=20261030-ppt" title="Vision-language data" />
         </div>
 
         <div className="subsection">

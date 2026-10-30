@@ -90,7 +90,7 @@ test("server-renders the Meituan-Robotics-0 project page", async () => {
   assert.doesNotMatch(html, /0\.08 → 0\.86|15\.27|>Score</);
   assert.doesNotMatch(html, /Capability Breakdown|RoboTwin clean-scene|RoboTwin randomized-scene/);
   assert.doesNotMatch(html, /Data Curation|data-curation\.png/);
-  assert.match(html, /vision-language-data\.svg/);
+  assert.match(html, /vision-language-data-20261030\.svg/);
   assert.doesNotMatch(html, /action-head\.svg/);
   assert.match(html, /embodied-agent-20261029\.svg/);
   assert.doesNotMatch(html, /rollback-20261029\.svg|vision-language-data-20261029\.svg/);
@@ -272,7 +272,7 @@ test("ships every project demo at high-bitrate source quality in a browser-compa
 test("ships the latest PPT overview and preserves the other figure slots", async () => {
   const figures = await Promise.all([
     readFile(new URL("../public/assets/main-overview-20261029.svg", import.meta.url), "utf8"),
-    readFile(new URL("../public/assets/vision-language-data.svg", import.meta.url), "utf8"),
+    readFile(new URL("../public/assets/vision-language-data-20261030.svg", import.meta.url), "utf8"),
     readFile(new URL("../public/assets/embodied-agent-20261029.svg", import.meta.url), "utf8"),
   ]);
 
